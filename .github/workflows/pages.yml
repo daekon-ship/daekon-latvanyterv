@@ -1,0 +1,55 @@
+name: Build, ellenőrzés és GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Függőségek
+        run: npm install --no-audit --no-fund
+      - name: Típusellenőrzés
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build (Vite, base /daekon-latvanyterv/)
+        run: npm run build
+      - name: Böngészős tesztek (Playwright, Chromium + SwiftShader WebGL)
+        run: |
+          pip install --quiet playwright==1.56.0 pillow
+          python -m playwright install --with-deps chromium
+          npx vite preview --port 4173 --strictPort &
+          sleep 3
+          python3 -I tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots
+      - name: Tesztképek mentése
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-kepernyokepek
+          path: shots/
+          if-no-files-found: ignore
+      - name: Publikálás a gh-pages ágra
+        run: |
+          cd dist
+          touch .nojekyll
+          cp index.html 404.html
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Pages: ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
