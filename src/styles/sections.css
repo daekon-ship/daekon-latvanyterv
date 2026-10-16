@@ -74,10 +74,8 @@
 .kinetic__line--2 {
   text-align: right;
 }
-@media (prefers-reduced-motion: reduce) {
-  .kinetic__line {
-    --lit: 100%;
-  }
+html.reduce-motion .kinetic__line {
+  --lit: 100%;
 }
 
 /* =================== KIOSZ =================== */

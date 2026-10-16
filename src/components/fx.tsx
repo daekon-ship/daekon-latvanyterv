@@ -5,7 +5,7 @@
    csökkentett mozgásnál kikapcsolnak.
    ========================================================================= */
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { isTouch, reducedMotion } from "../lib/motion";
+import { isTouch, motionOverride, reducedMotion, setMotionOverride, systemReducedMotion } from "../lib/motion";
 
 const fine = () => !isTouch() && !reducedMotion();
 
@@ -200,5 +200,24 @@ export function Tilt({ children, className = "", max = 5 }: { children: ReactNod
     <div ref={ref} className={`tilt ${className}`.trim()}>
       {children}
     </div>
+  );
+}
+
+/** Ha a rendszer csökkentett mozgást kér, itt kapcsolhatók be (vagy vissza) az animációk. */
+export function MotionToggle() {
+  const [show] = useState(() => systemReducedMotion());
+  const on = motionOverride();
+  if (!show) return null;
+  return (
+    <button
+      type="button"
+      className="motion-toggle"
+      aria-pressed={on}
+      onClick={() => setMotionOverride(!on)}
+      title="Az eszközöd csökkentett mozgást kér — itt felülírhatod ehhez az oldalhoz."
+    >
+      <span className="motion-toggle__sw" aria-hidden="true" />
+      {on ? "Animációk: be" : "Animációk bekapcsolása"}
+    </button>
   );
 }

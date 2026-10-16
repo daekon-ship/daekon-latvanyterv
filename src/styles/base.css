@@ -79,10 +79,8 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 8px);
 }
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+html:not(.reduce-motion) {
+  scroll-behavior: smooth;
 }
 html,
 body {
@@ -414,22 +412,73 @@ p {
   transition-delay: calc(var(--i) * 55ms + 260ms + var(--d, 0) * 1ms);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    transition-delay: 0ms !important;
-  }
-  .js [data-reveal],
-  .js .words:not([data-in]) .w > span {
-    opacity: 1 !important;
-    transform: none !important;
-    clip-path: none !important;
-    filter: none !important;
-  }
+/* Csökkentett mozgás (rendszerbeállítás, ha a látogató nem kapcsolta be az animációkat) */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+}
+html.reduce-motion.js [data-reveal],
+html.reduce-motion.js .words:not([data-in]) .w > span {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+  filter: none !important;
+}
+
+/* Animáció-kapcsoló — csak akkor látszik, ha a rendszer csökkentett mozgást kér */
+.motion-toggle {
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 150;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: rgba(14, 16, 25, 0.88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 560;
+  cursor: pointer;
+  box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.8);
+}
+.motion-toggle:hover {
+  border-color: rgba(232, 236, 255, 0.4);
+}
+.motion-toggle__sw {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  flex: none;
+}
+.motion-toggle__sw::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  transition: transform 0.25s var(--ease-out);
+}
+.motion-toggle[aria-pressed="true"] .motion-toggle__sw {
+  background: var(--lime);
+}
+.motion-toggle[aria-pressed="true"] .motion-toggle__sw::after {
+  background: #0a0b12;
+  transform: translateX(14px);
 }
 
 /* ---------- mikrointerakciók ---------- */

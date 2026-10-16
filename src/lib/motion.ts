@@ -5,8 +5,37 @@ gsap.registerPlugin(ScrollTrigger);
 
 export { gsap, ScrollTrigger };
 
-export const reducedMotion = (): boolean =>
+/* Csökkentett mozgás: alapból a rendszerbeállítást követjük, de a látogató
+   egy kapcsolóval (vagy ?mozgas=1 paraméterrel) bekapcsolhatja az animációkat. */
+const MOTION_KEY = "daekon-mozgas";
+
+export const systemReducedMotion = (): boolean =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+export function motionOverride(): boolean {
+  try {
+    const q = new URLSearchParams(location.search).get("mozgas");
+    if (q === "1") localStorage.setItem(MOTION_KEY, "be");
+    if (q === "0") localStorage.removeItem(MOTION_KEY);
+    return localStorage.getItem(MOTION_KEY) === "be";
+  } catch {
+    return new URLSearchParams(location.search).get("mozgas") === "1";
+  }
+}
+
+export function setMotionOverride(on: boolean) {
+  try {
+    if (on) localStorage.setItem(MOTION_KEY, "be");
+    else localStorage.removeItem(MOTION_KEY);
+  } catch {
+    /* privát mód: csak erre a betöltésre */
+  }
+  const url = new URL(location.href);
+  url.searchParams.set("mozgas", on ? "1" : "0");
+  location.replace(url.toString());
+}
+
+export const reducedMotion = (): boolean => systemReducedMotion() && !motionOverride();
 
 export const isTouch = (): boolean =>
   typeof window !== "undefined" && window.matchMedia("(hover: none), (pointer: coarse)").matches;

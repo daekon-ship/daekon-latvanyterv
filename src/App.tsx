@@ -11,7 +11,7 @@ import { Process } from "./components/Process";
 import { Faq } from "./components/Faq";
 import { Contact } from "./components/Contact";
 import { Quote } from "./components/Quote";
-import { ClickSpark, Cursor, ScrollProgress } from "./components/fx";
+import { ClickSpark, Cursor, MotionToggle, ScrollProgress } from "./components/fx";
 import { Footer } from "./components/Footer";
 import { ScrollTrigger, initReveals } from "./lib/motion";
 
@@ -51,6 +51,7 @@ export function App() {
         <Contact />
       </main>
       <Footer />
+      <MotionToggle />
     </>
   );
 }

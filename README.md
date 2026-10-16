@@ -24,7 +24,7 @@ Működő, interaktív látványterv a daekon.hu új változatához. **Nem az é
 
 **Színállapot:** egyetlen, változatlan paletta (grafit-éj, lila atmoszféra, DAEKON fénykék `#2B50FF`, lime csak jelzésre). A háttér CSS-ből jön, a WebGL-vászon átlátszó → betöltés, hidratálás és intro alatt sincs lila→kék váltás.
 
-**Teljesítmény, hozzáférhetőség:** a Three.js külön, késleltetve töltődő csomag; shader-előfordítás; DPR-korlát; automatikus minőségcsökkentés lassú gépen; renderelés szüneteltetése, ha a hero nem látszik vagy a lap háttérben van; WebGL-kontextusvesztésnél és WebGL nélkül SVG-alapú tartalék nézet (`?nowebgl` paraméterrel kipróbálható); `prefers-reduced-motion`; AVIF/WebP képek több méretben; skip link, fókuszállapotok, ARIA a füleken és lenyitókon.
+**Teljesítmény, hozzáférhetőség:** a Three.js külön, késleltetve töltődő csomag; shader-előfordítás; DPR-korlát; automatikus minőségcsökkentés lassú gépen; renderelés szüneteltetése, ha a hero nem látszik vagy a lap háttérben van; WebGL-kontextusvesztésnél és WebGL nélkül SVG-alapú tartalék nézet (`?nowebgl` paraméterrel kipróbálható); `prefers-reduced-motion` (alapból tiszteletben tartja; ilyenkor bal lent megjelenik egy „Animációk bekapcsolása” kapcsoló, vagy `?mozgas=1` paraméterrel is bekapcsolható); AVIF/WebP képek több méretben; skip link, fókuszállapotok, ARIA a füleken és lenyitókon.
 
 ## Hero-koncepciók (art direction)
 

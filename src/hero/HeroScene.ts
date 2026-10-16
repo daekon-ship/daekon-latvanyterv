@@ -465,16 +465,43 @@ export class HeroScene {
     const h = 2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)) * CAM_Z;
     const w = h * aspect;
     const portrait = aspect < 0.95;
-    // Álló logó (mark a felirat fölött) — a márkakönyv „stacked" elrendezése,
-    // térben: az embléma a betűk teteje elé lóg, így valódi a takarás.
-    const wordW = portrait ? w * 0.84 : Math.min(w * 0.4, h * 0.95);
-    const wordH = wordW * (100 / 704);
+    const vh = this.o.canvas.clientHeight || window.innerHeight;
+    const pxToWorld = h / vh;
+
+    // Szabad függőleges sáv: a fejléc alja és a hero szövegének teteje között
+    // (oldal tetején mérve). Ebbe illesztjük az álló logókompozíciót, így a
+    // 3D soha nem csúszik rá a menüre vagy a főcímre — bármilyen ablakméretnél.
+    const header = document.querySelector<HTMLElement>(".site-header");
+    const copy = document.querySelector<HTMLElement>(".hero__kicker");
+    const bandTop = (header?.offsetHeight ?? 72) + (portrait ? 24 : 40);
+    let bandBottom = vh * 0.5;
+    if (copy) {
+      let y = 0;
+      for (let el: HTMLElement | null = copy; el; el = el.offsetParent as HTMLElement | null) y += el.offsetTop;
+      bandBottom = Math.min(vh - 120, y - (portrait ? 16 : 30));
+    }
+    const bandPx = Math.max(140, bandBottom - bandTop);
+
+    // Kompozíció: embléma (2,1 × betűmagasság) a felirat fölött, kissé rálógva.
+    // Teljes magasság ≈ 3,2 × betűmagasság.
+    const STACK = 3.4;
+    let wordH = (bandPx / STACK) * pxToWorld;
+    // mérsékelt méret: a felirat legfeljebb ~540 px széles
+    const maxW = Math.min(portrait ? w * 0.84 : w * 0.42, 540 * pxToWorld);
+    let wordW = wordH * 7.04;
+    if (wordW > maxW) {
+      wordW = maxW;
+      wordH = wordW / 7.04;
+    }
+    const stackH = wordH * STACK;
+    const bandCenterPx = bandTop + bandPx / 2;
+    const stackCenterY = (0.5 - bandCenterPx / vh) * h;
+    const wordY = stackCenterY - stackH / 2 + wordH * 0.5;
     const wordX = portrait ? 0 : w * 0.09;
-    const wordY = portrait ? h * 0.17 : h * 0.09;
-    const emSize = wordH * (portrait ? 2.1 : 2.15);
+    const emSize = wordH * 2.1;
     const emFinal = new THREE.Vector3(
       wordX + wordW * (portrait ? 0.02 : 0.04),
-      wordY + wordH * (portrait ? 1.55 : 1.6),
+      wordY + wordH * 1.6,
       portrait ? 1.3 : 1.4,
     );
     return { w, h, wordW, wordH, wordX, wordY, emSize, emFinal, portrait };

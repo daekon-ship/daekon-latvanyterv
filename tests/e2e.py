@@ -281,6 +281,20 @@ with sync_playwright() as p:
     check("prefers-reduced-motion: azonnal használható", time.time() - t0 < 4, f"{time.time() - t0:.1f} s")
     ctx.close()
 
+    # 10b) Animáció-kapcsoló csökkentett mozgásnál
+    ctx, page, errors, failed = new_page(browser, 1280, 800, reduced_motion="reduce")
+    page.goto(BASE, wait_until="domcontentloaded")
+    wait_intro(page, 8000)
+    check("csökkentett mozgásnál látszik az „Animációk bekapcsolása” kapcsoló", page.is_visible(".motion-toggle"))
+    page.click(".motion-toggle")
+    page.wait_for_load_state("domcontentloaded")
+    wait_intro(page)
+    check(
+        "a kapcsoló után teljes animáció fut (nincs reduce-motion osztály)",
+        not page.evaluate("document.documentElement.classList.contains('reduce-motion')"),
+    )
+    ctx.close()
+
     # 11) Billentyűzet: skip link és fókusz
     ctx, page, errors, failed = new_page(browser, 1280, 800)
     page.goto(BASE, wait_until="domcontentloaded")
