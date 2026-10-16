@@ -431,3 +431,120 @@ p {
     filter: none !important;
   }
 }
+
+/* ---------- mikrointerakciók ---------- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--lime);
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 236, 255, 0.45);
+  transition:
+    opacity 0.3s,
+    width 0.35s var(--ease-out),
+    height 0.35s var(--ease-out),
+    margin 0.35s var(--ease-out),
+    background-color 0.35s,
+    border-color 0.35s;
+}
+.cursor-ring.is-hot {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-color: rgba(139, 107, 255, 0.8);
+  background: rgba(139, 107, 255, 0.08);
+}
+.cursor-ring.is-label {
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.cursor-ring.is-label::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0a0b12;
+}
+html.has-cursor,
+html.has-cursor a,
+html.has-cursor button {
+  cursor: none;
+}
+html.has-cursor input,
+html.has-cursor textarea {
+  cursor: text;
+}
+.cspark {
+  position: fixed;
+  inset: 0;
+  z-index: 1999;
+  pointer-events: none;
+}
+.cspark__p {
+  position: absolute;
+  left: -5px;
+  top: -1px;
+  width: 10px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--violet);
+}
+.cspark__p.is-lime {
+  background: var(--lime);
+}
+.scroll-progress {
+  --p: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  z-index: 102;
+  background: linear-gradient(90deg, var(--blue), var(--violet), var(--lime));
+  transform: scaleX(var(--p));
+  transform-origin: left;
+  pointer-events: none;
+}
+.tilt {
+  position: relative;
+  transition: transform 0.6s var(--ease-out);
+  will-change: transform;
+}
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.07), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.tilt:hover::after {
+  opacity: 1;
+}

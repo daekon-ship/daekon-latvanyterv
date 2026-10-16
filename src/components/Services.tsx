@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SERVICES } from "../content";
 import { Arrow, Words } from "./ui";
+import { Scramble } from "./fx";
 
 /* Kinyíló szolgáltatássorok: a sor jobb oldalán a probléma helyére a
    megoldás úszik be. A sor magassága nem változik → a kurzor alatt nem
@@ -12,7 +13,7 @@ export function Services() {
     <section id="szolgaltatasok" className="section services" aria-labelledby="szolg-title">
       <div className="wrap">
         <div className="section-head">
-          <p className="label">Szolgáltatások</p>
+          <p className="label"><Scramble text="Szolgáltatások" /></p>
           <h2 id="szolg-title">
             <Words text="A weboldaltól a saját rendszerig." focus={["saját", "rendszerig"]} />
           </h2>

@@ -1,5 +1,6 @@
 import { CONTACT, REVIEWS } from "../content";
 import { Arrow, Words } from "./ui";
+import { Scramble, Tilt } from "./fx";
 
 export function Reviews() {
   return (
@@ -7,7 +8,7 @@ export function Reviews() {
       <div className="wrap">
         <div className="reviews__head">
           <div className="section-head">
-            <p className="label">Vélemények</p>
+            <p className="label"><Scramble text="Vélemények" /></p>
             <h2 id="vel-title">
               <Words text="Akik már engem választottak." focus={["engem"]} />
             </h2>
@@ -22,7 +23,8 @@ export function Reviews() {
 
         <ul className="rv">
           {REVIEWS.map((r, i) => (
-            <li key={r.name} className="rv__card" data-reveal style={{ "--d": (i % 3) * 90 + Math.floor(i / 3) * 60 } as React.CSSProperties}>
+            <li key={r.name} className="rv__li" data-reveal style={{ "--d": (i % 3) * 90 + Math.floor(i / 3) * 60 } as React.CSSProperties}>
+              <Tilt className="rv__card" max={3}>
               <figure>
                 <blockquote>
                   <p>{r.text}</p>
@@ -37,6 +39,7 @@ export function Reviews() {
               <a className="rv__src" href={CONTACT.reviews} target="_blank" rel="noopener" aria-label={`${r.name} eredeti értékelése a Facebookon`}>
                 Eredeti értékelés <Arrow diagonal />
               </a>
+              </Tilt>
             </li>
           ))}
         </ul>

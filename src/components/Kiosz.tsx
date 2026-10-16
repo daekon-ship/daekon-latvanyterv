@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { KIOSZ } from "../content";
 import { Arrow, MagneticLink, Picture, Words } from "./ui";
 import { ScrollTrigger, isTouch, reducedMotion } from "../lib/motion";
+import { Scramble } from "./fx";
 
 const PHOTOS = [
   { base: "kiosz-pizza", widths: [640, 1200], alt: "Nápolyi margherita a KIOSZ teraszán" },
@@ -172,7 +173,7 @@ export function Kiosz() {
       <div ref={pinRef} className="kiosz__pin">
         <div className="wrap kiosz__grid">
           <div className="kiosz__copy">
-            <p className="label">Kiemelt munka · {KIOSZ.place}</p>
+            <p className="label"><Scramble text={`Kiemelt munka · ${KIOSZ.place}`} /></p>
             <h2 id="kiosz-title" className="kiosz__title">
               <Words text={KIOSZ.name} focus={["KIOSZ"]} />
             </h2>
@@ -229,6 +230,14 @@ export function Kiosz() {
 
           <div className="kiosz__stage" ref={stageRef}>
             <div className="kiosz__frame">
+              <div className="kiosz__bar" aria-hidden="true">
+                <span className="kiosz__dots">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="kiosz__url">kioszpizza.hu</span>
+              </div>
               {PHOTOS.map((p, i) => (
                 <div
                   key={i}
@@ -251,8 +260,11 @@ export function Kiosz() {
               </div>
             </div>
             <div className="kiosz__ui" aria-hidden="true">
-              <div key={active} className="kiosz__ui-card">
-                <Schematic k={KIOSZ.layers[active].key} />
+              <div className="kiosz__phone">
+                <span className="kiosz__notch" />
+                <div key={active} className="kiosz__ui-card">
+                  <Schematic k={KIOSZ.layers[active].key} />
+                </div>
               </div>
               <span className="kiosz__ui-cap">Sematikus ábra — a valódi felület a kioszpizza.hu-n</span>
             </div>

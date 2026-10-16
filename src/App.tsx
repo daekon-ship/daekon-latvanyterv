@@ -10,6 +10,8 @@ import { About } from "./components/About";
 import { Process } from "./components/Process";
 import { Faq } from "./components/Faq";
 import { Contact } from "./components/Contact";
+import { Quote } from "./components/Quote";
+import { ClickSpark, Cursor, ScrollProgress } from "./components/fx";
 import { Footer } from "./components/Footer";
 import { ScrollTrigger, initReveals } from "./lib/motion";
 
@@ -31,6 +33,9 @@ export function App() {
       <a className="skip-link" href="#fo-tartalom">
         Ugrás a tartalomra
       </a>
+      <ScrollProgress />
+      <Cursor />
+      <ClickSpark />
       <Header />
       <main id="fo-tartalom" tabIndex={-1}>
         <Hero />
@@ -41,6 +46,7 @@ export function App() {
         <Reviews />
         <About />
         <Process />
+        <Quote />
         <Faq />
         <Contact />
       </main>

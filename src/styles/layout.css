@@ -42,6 +42,10 @@ html[data-intro="running"] .site-header {
   height: 26px;
   transition: transform 0.6s var(--ease-spring);
 }
+/* a 3D embléma „tart" a helyére — addig a hely üres */
+html[data-mark="flying"] .site-header .brand__mark {
+  opacity: 0;
+}
 .brand:hover .brand__mark {
   transform: rotate(-8deg) scale(1.06);
 }

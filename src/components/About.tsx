@@ -1,5 +1,6 @@
 import { MARK_BOWL, MARK_STEM } from "../brand/paths";
 import { Words } from "./ui";
+import { Scramble } from "./fx";
 
 const POINTS = [
   {
@@ -26,7 +27,7 @@ export function About() {
       </div>
       <div className="wrap about__grid">
         <div className="about__copy">
-          <p className="label">Rólam</p>
+          <p className="label"><Scramble text="Rólam" /></p>
           <h2 id="rolam-title">
             <Words text="A DAEKON mögött egyetlen fejlesztő áll." focus={["egyetlen"]} />
           </h2>

@@ -8,10 +8,14 @@ Működő, interaktív látványterv a daekon.hu új változatához. **Nem az é
 
 | Szakasz | Megoldás |
 |---|---|
-| Hero | Three.js-jelenet: a Split D embléma extrudált, fémes 3D-objektumként érkezik a ködös térből, a márkakönyv vektoraiból épített 3D-s DAEKON-felirat **mögött** halad el, majd elé fordul (valódi mélységpuffer-takarás). A betűk vágósík alól emelkednek (maszkolt alapvonal). Fénycsík a fémen, ritka porszemcsék, amelyek a kurzor elől kitérnek. Egérre finom perspektíva, görgetésre kamera-hátrálás. Kihagyható intro, mobilon és ismételt látogatáskor rövidebb. |
+| Hero | Three.js-jelenet (krómozott betűk, fémes-üveges embléma, utófeldolgozásban visszafogott kromatikus fénytörés, részecskefátyol): a Split D embléma extrudált, fémes 3D-objektumként érkezik a ködös térből, a márkakönyv vektoraiból épített 3D-s DAEKON-felirat **mögött** halad el, majd elé fordul (valódi mélységpuffer-takarás). A betűk vágósík alól emelkednek (maszkolt alapvonal). Fénycsík a fémen, ritka porszemcsék, amelyek a kurzor elől kitérnek. Egérre finom perspektíva, görgetésre kamera-hátrálás. Kihagyható intro, mobilon és ismételt látogatáskor rövidebb. |
+| Folytonosság | Görgetésre az embléma egy fordulattal pontosan a fejléc logójának helyére repül, ott átadja a helyét az SVG-logónak. |
 | Kinetikus sáv | „Egyedi fejlesztés. / Valódi rendszerek. / A te vállalkozásodra.” — görgetésre ellentétes irányba csúszó, kigyúló sorok (GSAP ScrollTrigger). |
 | KIOSZ Pizza | Asztalon rögzített jelenet: a görgetés lépteti az 5 réteget (rendelés, követés, konyha, admin, hűségprogram), a fotók clip-path-szal váltanak, a sematikus felületkártyák kaszkádban lépnek be. Mobilon érintéssel váltható fülek. |
-| Munkák | Asztalon reflektorfényes lista + aktív projekt; mobilon függőleges kártyák. Csak valós referenciák, élő linkkel. |
+| KIOSZ (eszközök) | Böngészőablak (kioszpizza.hu, valódi fotók) + telefonkeret a sematikus felülettel. |
+| Munkák | Asztalon reflektorfényes lista + aktív projekt, váltáskor „liquid glass” fénytörés; a lemez kattintható (élő oldal). Mobilon függőleges kártyák. |
+| Ajánlatkérés | A daekon.hu asszisztense (átvéve, ugyanazokkal az árakkal): leírásból tájékoztató becslés, gyorsgombokkal bővíthető, e-mailként küldhető. |
+| Mikrointerakciók | Saját kurzor címkével, kattintásszikra, görgetési csík, dekódoló címkék, billenő kártyák, mágneses gombok (a daekon.hu eszköztárából). |
 | Szolgáltatások | 7 sor „a gond → amit csinálok” cserével, állandó sormagassággal. |
 | Vélemények | A daekon.hu 6 Facebook-ajánlása szó szerint, 3×2 rácsban, forráslinkkel. |
 | Rólam | Egyes szám első személy; a Split D jel szétnyíló varrattal, nagyon lassú háttér-mesh. |
@@ -21,6 +25,18 @@ Működő, interaktív látványterv a daekon.hu új változatához. **Nem az é
 **Színállapot:** egyetlen, változatlan paletta (grafit-éj, lila atmoszféra, DAEKON fénykék `#2B50FF`, lime csak jelzésre). A háttér CSS-ből jön, a WebGL-vászon átlátszó → betöltés, hidratálás és intro alatt sincs lila→kék váltás.
 
 **Teljesítmény, hozzáférhetőség:** a Three.js külön, késleltetve töltődő csomag; shader-előfordítás; DPR-korlát; automatikus minőségcsökkentés lassú gépen; renderelés szüneteltetése, ha a hero nem látszik vagy a lap háttérben van; WebGL-kontextusvesztésnél és WebGL nélkül SVG-alapú tartalék nézet (`?nowebgl` paraméterrel kipróbálható); `prefers-reduced-motion`; AVIF/WebP képek több méretben; skip link, fókuszállapotok, ARIA a füleken és lenyitókon.
+
+## Hero-koncepciók (art direction)
+
+| | A — Cinematic Object | B — Digital Architecture | C — Experimental Typography |
+|---|---|---|---|
+| Ötlet | A Split D 3D-s, fémes tárgyként érkezik, a krómozott DAEKON-felirat mögött és előtt halad, majd a fejléc logójává száll. | Absztrakt, térbeli „szoftver-architektúra”: rácsok, csomópontok, adatfolyam-vonalak, amelyek között a kamera halad. | Szerkesztőségi, mozgó betűkompozíció; a 3D csak kísérő. |
+| Karakter | Erős, egyértelműen DAEKON | Látványos, de általános „tech” | Elegáns, de nagy betűk nélkül gyenge (a túlméretezett tipó tiltott) |
+| Márkailleszkedés | A logójelből épül | Nem kötődik a márkához | Részleges |
+| Használhatóság / sebesség | Egy objektum, gyors; WebGL nélkül SVG-tartalék | Sok objektum, mobilon nehéz | Gyors |
+| **Döntés** | **Kiválasztva** | Elvetve: klisés, nehéz | Elvetve: a méretkorlát miatt nem tud érvényesülni |
+
+A C-ből a kinetikus sáv és a szavanként maszkolt címek maradtak meg.
 
 ## Futtatás
 

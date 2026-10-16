@@ -49,13 +49,15 @@
 }
 
 .hero__canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 101;
   pointer-events: none;
-  opacity: calc(1 - max(0, (var(--hs) - 0.55) * 2.2));
+}
+html.menu-open .hero__canvas {
+  visibility: hidden;
 }
 
 /* --- tartalék nézet (WebGL nélkül) --- */

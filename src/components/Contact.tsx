@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { CONTACT } from "../content";
 import { MARK_BOWL, MARK_STEM } from "../brand/paths";
 import { Arrow, Words } from "./ui";
+import { Scramble } from "./fx";
 
 const TYPES = [
   "Weboldal",
@@ -65,7 +66,7 @@ export function Contact() {
       <div className="contact__glow" aria-hidden="true" />
       <div className="wrap contact__grid">
         <div className="contact__copy">
-          <p className="label">Kapcsolat</p>
+          <p className="label"><Scramble text="Kapcsolat" /></p>
           <h2 id="kapcsolat-title" className="contact__title">
             <Words text="Van egy ötleted? Megvalósítom." focus={["Megvalósítom"]} />
           </h2>

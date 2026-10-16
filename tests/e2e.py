@@ -107,6 +107,13 @@ with sync_playwright() as p:
     check("nincs JavaScript-hiba a konzolban", not errors, " | ".join(errors[:4]))
     check("nincs 404-es asset", not failed, " | ".join(failed[:4]))
 
+    # logó-folytonosság: a 3D embléma a fejléc logójának helyére száll
+    check(
+        "görgetés után a 3D embléma a fejléc logójává válik",
+        page.evaluate("document.documentElement.dataset.mark") == "landed"
+        and page.evaluate("getComputedStyle(document.querySelector('.site-header .brand__mark')).opacity") == "1",
+    )
+
     # 2) Navigáció
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(600)
@@ -167,6 +174,22 @@ with sync_playwright() as p:
     page.wait_for_timeout(600)
     check("GYIK: a kérdés kinyílik", page.get_attribute(".faq__item >> nth=2 >> button", "aria-expanded") == "true")
     shot(page, "09-gyik")
+
+    # 5b) Ajánlatkérő asszisztens (a daekon.hu meglévő funkciója)
+    page.evaluate("document.getElementById('ajanlat').scrollIntoView({behavior: 'instant'})")
+    page.wait_for_timeout(600)
+    page.fill("#qa-in", "Webáruház bankkártyás fizetéssel és adminnal")
+    page.click(".qa__go")
+    page.wait_for_selector(".qa__amount", timeout=4000)
+    amount = page.inner_text(".qa__amount")
+    check("Asszisztens: leírásra tájékoztató becslést ad", "Ft" in amount, amount)
+    page.click(".qa__chip >> nth=0")
+    page.wait_for_timeout(300)
+    amount2 = page.inner_text(".qa__amount")
+    check("Asszisztens: gyorsgombra frissül a becslés", amount2 != amount, f"{amount} → {amount2}")
+    href = page.get_attribute(".qa__send", "href") or ""
+    check("Asszisztens: e-mailként küldhető (hello@daekon.hu)", href.startswith("mailto:hello@daekon.hu"))
+    shot(page, "10a-asszisztens")
 
     # 6) Űrlap: hibák, majd előre kitöltött levél (mailto)
     page.evaluate("document.getElementById('kapcsolat').scrollIntoView({behavior: 'instant'})")

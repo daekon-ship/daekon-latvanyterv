@@ -74,7 +74,7 @@ export function Header() {
           </ul>
         </nav>
 
-        <a ref={ctaRef} className="btn btn--primary btn--sm header-cta" href="#kapcsolat">
+        <a ref={ctaRef} className="btn btn--primary btn--sm header-cta" href="#ajanlat">
           Ajánlatkérés
         </a>
 

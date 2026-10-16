@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { PROCESS } from "../content";
 import { Words } from "./ui";
 import { gsap, reducedMotion } from "../lib/motion";
+import { Scramble } from "./fx";
 
 export function Process() {
   const ref = useRef<HTMLElement>(null);
@@ -37,7 +38,7 @@ export function Process() {
     <section id="folyamat" ref={ref} className="section process" aria-labelledby="folyamat-title">
       <div className="wrap">
         <div className="section-head">
-          <p className="label">Folyamat</p>
+          <p className="label"><Scramble text="Folyamat" /></p>
           <h2 id="folyamat-title">
             <Words text="Így dolgozom" />
           </h2>

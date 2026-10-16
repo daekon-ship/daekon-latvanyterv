@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PROJECTS, type Project } from "../content";
 import { Arrow, Picture, Words } from "./ui";
+import { Scramble, Tilt } from "./fx";
+import { reducedMotion } from "../lib/motion";
 
 /* Projektenként egyedi, de rendszeren belüli „lemez": a domain neve
    rácsra írva — nem kitalált képernyőkép. Ahol van valódi ügyfélfotó,
@@ -15,7 +17,15 @@ function Plate({ p, eager = false }: { p: Project; eager?: boolean }) {
   const h = hueOf(p.domain);
   const angle = 18 + (h % 50);
   return (
-    <div className="plate" style={{ "--pa": `${angle}deg`, "--px": `${20 + (h % 60)}%` } as React.CSSProperties}>
+    <a
+      className="plate"
+      href={p.url}
+      target="_blank"
+      rel="noopener"
+      data-cursor="Megnyitás"
+      aria-label={`${p.name} — ${p.domain} megnyitása új lapon`}
+      style={{ "--pa": `${angle}deg`, "--px": `${20 + (h % 60)}%` } as React.CSSProperties}
+    >
       <div className="plate__bar" aria-hidden="true">
         <span className="plate__lock" />
         <span className="plate__url">{p.domain}</span>
@@ -37,7 +47,7 @@ function Plate({ p, eager = false }: { p: Project; eager?: boolean }) {
           </div>
         )}
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -63,15 +73,45 @@ function Meta({ p }: { p: Project }) {
   );
 }
 
+/* Liquid Glass váltás: projektváltáskor a lemez egy rövid, folyékony
+   fénytörésen megy át (SVG displacement), majd kitisztul. Csak itt. */
+function useLiquid(key: number) {
+  const disp = useRef<SVGFEDisplacementMapElement>(null);
+  const turb = useRef<SVGFETurbulenceElement>(null);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (reducedMotion() || !disp.current) return;
+    const t0 = performance.now();
+    let raf = 0;
+    const seed = Math.random() * 100;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / 750);
+      const k = Math.sin(Math.PI * Math.min(1, t * 1.25)) * (1 - t);
+      disp.current?.setAttribute("scale", (k * 46).toFixed(2));
+      turb.current?.setAttribute("seed", String(seed));
+      turb.current?.setAttribute("baseFrequency", `${(0.008 + t * 0.006).toFixed(4)} ${(0.02 - t * 0.008).toFixed(4)}`);
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [key]);
+  return { disp, turb };
+}
+
 export function Works() {
   const [active, setActive] = useState(0);
   const p = PROJECTS[active];
+  const { disp, turb } = useLiquid(active);
 
   return (
     <section id="munkak" className="section works" aria-labelledby="munkak-title">
       <div className="wrap">
         <div className="section-head">
-          <p className="label">Munkák</p>
+          <p className="label"><Scramble text="Munkák" /></p>
           <h2 id="munkak-title">
             <Words text="Éles rendszerek, valódi ügyfeleknek." focus={["valódi"]} />
           </h2>
@@ -103,8 +143,18 @@ export function Works() {
           </ol>
 
           <div className="works__stage" aria-live="polite">
+            <svg className="sr-only" aria-hidden="true" focusable="false">
+              <filter id="liquid" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence ref={turb} type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="3" />
+                <feDisplacementMap ref={disp} in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="B" />
+              </filter>
+            </svg>
             <div key={active} className="works__card">
-              <Plate p={p} />
+              <Tilt className="works__tilt" max={4}>
+                <div className="works__glass">
+                  <Plate p={p} />
+                </div>
+              </Tilt>
               <Meta p={p} />
             </div>
           </div>

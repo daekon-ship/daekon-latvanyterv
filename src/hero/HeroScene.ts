@@ -10,6 +10,12 @@
    - Fénycsík fut végig a fémes felületen az érkezés alatt.
    - Ritka porszemcsék; a kurzor közelében finoman kitérnek (particle cloak).
 
+   - Részecskefátyol (particle cloak) az embléma körül, a kurzor elől kitér.
+   - Utófeldolgozás: visszafogott kromatikus fénytörés a kép szélein és
+     gyors mozgásnál, vignetta, filmszemcse (asztalon).
+   - Folytonosság: görgetésre a 3D embléma egy fordulattal pontosan a
+     fejléc logójának helyére repül, ott átadja a helyét az SVG-logónak.
+
    A háttér CSS-ből jön (átlátszó renderer) → a betöltés előtt és után
    pontosan ugyanaz a színvilág, nincs lila→kék váltás.
    ========================================================================= */
@@ -69,6 +75,13 @@ export class HeroScene {
   private rim: THREE.DirectionalLight;
   private dust?: THREE.Points;
   private dustMat?: THREE.ShaderMaterial;
+  private cloak?: THREE.Points;
+  private cloakMat?: THREE.ShaderMaterial;
+  private post?: { rt: THREE.WebGLRenderTarget; scene: THREE.Scene; cam: THREE.OrthographicCamera; mat: THREE.ShaderMaterial };
+  private lastEm = new THREE.Vector3();
+  private speed = 0;
+  private landed = false;
+  private markEl: HTMLElement | null = null;
   private pmrem?: THREE.WebGLRenderTarget;
   private layout!: Layout;
   private curve!: THREE.CatmullRomCurve3;
@@ -130,13 +143,19 @@ export class HeroScene {
     const pmremGen = new THREE.PMREMGenerator(renderer);
     this.pmrem = pmremGen.fromScene(new RoomEnvironment(), 0.04);
     this.scene.environment = this.pmrem.texture;
-    this.scene.environmentIntensity = 0.55;
+    this.scene.environmentIntensity = 0.75;
     pmremGen.dispose();
 
     // Lila hátsó perem + hideg kitöltő + mozgó „fénycsík".
-    this.rim = new THREE.DirectionalLight(0x8b6bff, 2.4);
+    this.rim = new THREE.DirectionalLight(0x8b6bff, 4.2);
     this.rim.position.set(-6, 4, -6);
     this.scene.add(this.rim);
+    const rim2 = new THREE.DirectionalLight(0x6f5bff, 2.2);
+    rim2.position.set(7, -3, -5);
+    this.scene.add(rim2);
+    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    key.position.set(3, 6, 6);
+    this.scene.add(key);
     const fill = new THREE.DirectionalLight(0x9fb2ff, 0.5);
     fill.position.set(4, -2, 8);
     this.scene.add(fill);
@@ -149,7 +168,11 @@ export class HeroScene {
     if (!o.mobile || window.innerWidth > 420) this.buildDust(o.mobile ? 150 : 380);
     else this.buildDust(110);
 
+    this.buildCloak(o.mobile ? 90 : 220);
+    if (!o.mobile) this.buildPost();
+
     this.scene.add(this.word, this.emblem);
+    this.markEl = document.querySelector<HTMLElement>(".brand__mark");
     this.resize();
 
     window.addEventListener("resize", this.resize);
@@ -189,20 +212,22 @@ export class HeroScene {
     };
     // A sötét változat színei: világos szár + DAEKON fénykék bowl.
     const stemMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf4f5fa,
-      metalness: 0.38,
-      roughness: 0.34,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.2,
+      color: 0xf6f7fc,
+      metalness: 0.9,
+      roughness: 0.16,
+      clearcoat: 1,
+      clearcoatRoughness: 0.05,
+      envMapIntensity: 1.5,
     });
     const bowlMat = new THREE.MeshPhysicalMaterial({
       color: 0x2b50ff,
       emissive: 0x1636e7,
-      emissiveIntensity: 0.18,
-      metalness: 0.45,
-      roughness: 0.28,
+      emissiveIntensity: 0.22,
+      metalness: 0.6,
+      roughness: 0.2,
       clearcoat: 1,
-      clearcoatRoughness: 0.12,
+      clearcoatRoughness: 0.06,
+      envMapIntensity: 1.3,
       iridescence: 0.35,
       iridescenceIOR: 1.4,
       iridescenceThicknessRange: [180, 420],
@@ -234,12 +259,14 @@ export class HeroScene {
       const bb = geo.boundingBox!;
       const cx = (bb.min.x + bb.max.x) / 2;
       geo.translate(-cx, -50, -8);
+      // Csiszolt króm: a környezet és a lila perem tükröződik rajta.
       const mat = new THREE.MeshPhysicalMaterial({
-        color: 0xf1f2f7,
-        metalness: 0.15,
-        roughness: 0.42,
-        clearcoat: 0.4,
-        clearcoatRoughness: 0.4,
+        color: 0xe4e8f6,
+        metalness: 1,
+        roughness: 0.2,
+        clearcoat: 1,
+        clearcoatRoughness: 0.08,
+        envMapIntensity: 1.6,
         clippingPlanes: [this.clip],
         transparent: true,
         opacity: 0,
@@ -316,6 +343,121 @@ export class HeroScene {
     this.scene.add(this.dust);
   }
 
+
+  /** Részecskefátyol: gömbhéjon az embléma körül, a kurzor elől kitér. */
+  private buildCloak(count: number) {
+    const off = new Float32Array(count * 3);
+    const seed = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      const u = Math.random() * 2 - 1;
+      const a = Math.random() * Math.PI * 2;
+      const r = 0.75 + Math.random() * 0.55;
+      const q = Math.sqrt(1 - u * u);
+      off.set([Math.cos(a) * q * r, u * r * 0.9, Math.sin(a) * q * r * 0.6], i * 3);
+      seed[i] = Math.random() * 100;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(off, 3));
+    geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
+    this.cloakMat = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: {
+        uTime: { value: 0 },
+        uCenter: { value: new THREE.Vector3() },
+        uScale: { value: 1 },
+        uMouse: { value: new THREE.Vector3(99, 99, 0) },
+        uAlpha: { value: 0 },
+        uPx: { value: this.renderer.getPixelRatio() },
+        uMotion: { value: this.o.reducedMotion ? 0 : 1 },
+      },
+      vertexShader: /* glsl */ `
+        attribute float aSeed;
+        uniform float uTime, uScale, uPx, uMotion; uniform vec3 uCenter, uMouse;
+        varying float vTw; varying float vHue;
+        void main(){
+          float t = uTime * 0.25 * uMotion;
+          float c = cos(t + aSeed * 0.02), s = sin(t + aSeed * 0.02);
+          vec3 o = position;
+          o.xz = mat2(c, -s, s, c) * o.xz;
+          vec3 p = uCenter + o * uScale;
+          vec2 d = p.xy - uMouse.xy;
+          float k = smoothstep(uScale * 0.9, 0.0, length(d));
+          p.xy += normalize(d + 1e-4) * k * uScale * 0.45 * uMotion;
+          vec4 mv = modelViewMatrix * vec4(p, 1.0);
+          gl_Position = projectionMatrix * mv;
+          vTw = 0.5 + 0.5 * sin(uTime * 1.3 + aSeed * 2.7);
+          vHue = fract(aSeed * 0.37);
+          gl_PointSize = (1.6 + vTw * 2.2) * uPx * (12.0 / -mv.z);
+        }`,
+      fragmentShader: /* glsl */ `
+        uniform float uAlpha; varying float vTw; varying float vHue;
+        void main(){
+          float d = length(gl_PointCoord - 0.5);
+          float a = smoothstep(0.5, 0.0, d);
+          vec3 col = vHue < 0.06 ? vec3(0.78, 1.0, 0.24) : mix(vec3(0.55, 0.42, 1.0), vec3(0.42, 0.55, 1.0), vHue);
+          gl_FragColor = vec4(col, a * a * uAlpha * (0.3 + 0.7 * vTw));
+        }`,
+    });
+    this.cloak = new THREE.Points(geo, this.cloakMat);
+    this.cloak.frustumCulled = false;
+    this.scene.add(this.cloak);
+  }
+
+  /** Utófeldolgozás: kromatikus fénytörés + vignetta + szemcse, HDR-ből tónusleképezve. */
+  private buildPost() {
+    const rt = new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: 4 });
+    const mat = new THREE.ShaderMaterial({
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      uniforms: {
+        tScene: { value: rt.texture },
+        uChroma: { value: 0.0015 },
+        uTime: { value: 0 },
+        uRes: { value: new THREE.Vector2(1, 1) },
+      },
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D tScene; uniform float uChroma, uTime; uniform vec2 uRes;
+        varying vec2 vUv;
+        float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+        void main(){
+          vec2 dir = vUv - 0.5;
+          float r2 = dot(dir, dir);
+          vec2 off = dir * uChroma * (0.6 + r2 * 6.0);
+          vec4 g = texture2D(tScene, vUv);
+          vec4 cr = texture2D(tScene, vUv + off);
+          vec4 cb = texture2D(tScene, vUv - off);
+          vec4 col = vec4(cr.r, g.g, cb.b, max(g.a, max(cr.a, cb.a)));
+          col.rgb += (hash(vUv * uRes + uTime) - 0.5) * 0.025 * col.a;
+          gl_FragColor = col;
+          #include <tonemapping_fragment>
+          #include <colorspace_fragment>
+        }`,
+    });
+    const scene = new THREE.Scene();
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+    this.post = { rt, scene, cam: new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1), mat };
+  }
+
+  private draw() {
+    const P = this.post;
+    if (!P || this.lowTier) {
+      this.renderer.render(this.scene, this.camera);
+      return;
+    }
+    this.renderer.setRenderTarget(P.rt);
+    this.renderer.clear();
+    this.renderer.render(this.scene, this.camera);
+    this.renderer.setRenderTarget(null);
+    this.renderer.clear();
+    this.renderer.render(P.scene, P.cam);
+  }
+
   /* ----------------------------------------------------------- layout */
 
   private computeLayout(): Layout {
@@ -369,6 +511,11 @@ export class HeroScene {
     const wpx = c.clientWidth || window.innerWidth;
     const hpx = c.clientHeight || window.innerHeight;
     this.renderer.setSize(wpx, hpx, false);
+    if (this.post) {
+      const pr = this.renderer.getPixelRatio();
+      this.post.rt.setSize(Math.round(wpx * pr), Math.round(hpx * pr));
+      this.post.mat.uniforms.uRes.value.set(wpx * pr, hpx * pr);
+    }
     this.camera.aspect = wpx / hpx;
     this.camera.updateProjectionMatrix();
     this.applyLayout();
@@ -393,6 +540,8 @@ export class HeroScene {
     }
     // Rövid változat: mobilon és ismételt látogatáskor (sessionen belül).
     const k = this.o.shortIntro ? 0.5 : this.o.mobile ? 0.62 : 1;
+    // Valós időhöz kötött intro: lassú gépen sem nyúlik el (nincs lag-simítás).
+    gsap.ticker.lagSmoothing(0);
     const tl = gsap.timeline({ onComplete: done });
     this.tl = tl;
     tl.to(r, { dust: 0.8, duration: 1.6 * k, ease: "sine.out" }, 0)
@@ -431,6 +580,11 @@ export class HeroScene {
 
   setVisible(v: boolean) {
     this.visible = v;
+    if (!v) {
+      // a hero elhagyta a nézetet → végállapot (logó a fejlécben)
+      this.scroll = this.scrollSmooth = 1;
+      this.renderOnce();
+    }
     if (v && !this.raf) {
       this.clock.getDelta();
       this.loop();
@@ -466,14 +620,14 @@ export class HeroScene {
     this.raf = requestAnimationFrame(this.loop);
     const dt = Math.min(this.clock.getDelta(), 0.05);
     this.update(dt);
-    this.renderer.render(this.scene, this.camera);
+    this.draw();
     this.measure(dt);
   };
 
   private renderOnce() {
     if (this.disposed || !this.layout || !this.started) return;
     this.update(0);
-    this.renderer.render(this.scene, this.camera);
+    this.draw();
   }
 
   private measure(dt: number) {
@@ -500,61 +654,128 @@ export class HeroScene {
 
     const lerp = 1 - Math.pow(0.0015, dt || 1);
     this.pointerSmooth.lerp(this.pointer, motion ? lerp : 1);
-    this.scrollSmooth += (this.scroll - this.scrollSmooth) * (dt ? Math.min(1, dt * 9) : 1);
+    this.scrollSmooth += (this.scroll - this.scrollSmooth) * (dt ? Math.min(1, dt * 10) : 1);
+    if (Math.abs(this.scroll - this.scrollSmooth) < 0.0005) this.scrollSmooth = this.scroll;
     const s = this.scrollSmooth;
 
-    // Kamera: finom perspektívaváltás egérre + görgetésre hátrál.
-    const px = motion && !this.o.mobile ? this.pointerSmooth.x : 0;
-    const py = motion && !this.o.mobile ? this.pointerSmooth.y : 0;
-    this.camera.position.set(px * 0.55, py * 0.32 - s * 1.2, CAM_Z + s * 5);
-    this.camera.lookAt(0, -s * 1.6, 0);
+    // Repülés a fejlécbe: s ∈ [0.18, 1] → fl ∈ [0, 1]
+    const flight = motion ? THREE.MathUtils.smoothstep(s, 0.18, 1) : 0;
+    const fe = flight < 0.5 ? 4 * flight ** 3 : 1 - (-2 * flight + 2) ** 3 / 2; // easeInOutCubic
 
-    // Embléma az útvonalon + szinte észrevehetetlen idle.
+    // Kamera: finom perspektívaváltás egérre; a repülés alatt semlegesre áll,
+    // hogy a fejlécbeli célpont pixelpontos legyen.
+    const calm = 1 - fe;
+    const px = motion && !this.o.mobile ? this.pointerSmooth.x * calm : 0;
+    const py = motion && !this.o.mobile ? this.pointerSmooth.y * calm : 0;
+    this.camera.position.set(px * 0.55, py * 0.32, CAM_Z);
+    this.camera.lookAt(0, 0, 0);
+
+    // Embléma: intro-útvonal → (görgetés) → fejléc-logó helye
     const p = this.curve.getPoint(Math.min(1, Math.max(0, r.t)));
-    const idle = this.introFinished ? motion : 0;
+    const idle = this.introFinished ? motion * calm : 0;
+    const hx = p.x;
+    const hy = p.y + Math.sin(time * 0.7) * 0.035 * idle;
+    const hz = p.z;
+    let tx = hx, ty = hy, tz = hz, ts = L.emSize;
+    if (flight > 0 && this.markEl) {
+      const rc = this.markEl.getBoundingClientRect();
+      const vw = this.o.canvas.clientWidth || window.innerWidth;
+      const vh = this.o.canvas.clientHeight || window.innerHeight;
+      if (rc.width > 0) {
+        tx = ((rc.left + rc.width / 2) / vw - 0.5) * L.w;
+        ty = (0.5 - (rc.top + rc.height / 2) / vh) * L.h;
+        tz = 0;
+        ts = ((rc.height * 180) / 200) * (L.h / vh); // a jel 10..190 sávja
+      }
+    }
+    // ív: a pálya közepén kicsit előrébb jön (z), mint egy valódi tárgy
+    const arc = Math.sin(fe * Math.PI) * 2.2;
     this.emblem.position.set(
-      p.x,
-      p.y + Math.sin(time * 0.7) * 0.035 * idle + s * L.h * 0.22,
-      p.z + s * 1.5,
+      THREE.MathUtils.lerp(hx, tx, fe),
+      THREE.MathUtils.lerp(hy, ty, fe),
+      THREE.MathUtils.lerp(hz, tz, fe) + arc,
     );
+    // a méret előbb zsugorodik, mint ahogy a pozíció odaér → nem lóg ki a képből
+    const fs = 1 - (1 - flight) ** 2.4;
+    this.emblem.scale.setScalar(THREE.MathUtils.lerp(L.emSize, ts, fs));
     this.emblem.rotation.set(
-      r.rotX + Math.sin(time * 0.5) * 0.02 * idle + py * 0.06,
-      r.rotY + Math.sin(time * 0.33) * 0.05 * idle + px * 0.1 + s * 1.7,
-      r.rotZ,
+      (r.rotX + Math.sin(time * 0.5) * 0.02 * idle + py * 0.06) * calm,
+      (r.rotY + Math.sin(time * 0.33) * 0.05 * idle + px * 0.1) * calm + fe * Math.PI * 2,
+      r.rotZ * calm,
     );
 
-    // Betűk: maszkolt alapvonalból emelkedés, görgetésre szétnyíló mélység.
+    // Leszállás: az SVG-logó átveszi a helyét, a vászon elhalványul.
+    if (motion) {
+      const landed = flight > 0.995;
+      if (landed !== this.landed || !document.documentElement.dataset.mark) {
+        this.landed = landed;
+        document.documentElement.dataset.mark = landed ? "landed" : "flying";
+      }
+      this.o.canvas.style.opacity = landed ? "0" : "1";
+    } else {
+      // csökkentett mozgás: nincs repülés, a vászon egyszerűen elhalványul
+      this.o.canvas.style.opacity = String(Math.max(0, 1 - s * 1.4));
+    }
+
+    // Sebesség → kromatikus fénytörés (gyors mozgásnál erősebb)
+    if (dt > 0) {
+      const v = this.emblem.position.distanceTo(this.lastEm) / dt;
+      this.speed += (v - this.speed) * Math.min(1, dt * 6);
+    }
+    this.lastEm.copy(this.emblem.position);
+    if (this.post) {
+      const near = (1 - fe) ** 2; // a fejléc közelében tiszta kép
+      this.post.mat.uniforms.uChroma.value = (0.0014 + Math.min(0.0026, this.speed * 0.00012) * motion) * near;
+      this.post.mat.uniforms.uTime.value = time % 10;
+    }
+
+    // Betűk: maszkolt alapvonalból emelkedés; görgetésre mélységben szétnyílnak.
+    const sw = THREE.MathUtils.smoothstep(s, 0, 0.5);
     this.letters.forEach((l, i) => {
       const q = r.letters[i];
       const inv = 1 - q;
       l.mesh.position.set(
-        l.base.x,
-        l.base.y - inv * 118 + s * (24 + i * 9),
-        l.base.z + s * (i - 2.5) * 22,
+        l.base.x * (1 + sw * 0.25),
+        l.base.y - inv * 118 + sw * (30 + Math.abs(i - 2.5) * 14),
+        l.base.z + sw * (i - 2.5) * 46,
       );
-      l.mesh.rotation.x = inv * 0.9;
-      l.mat.opacity = Math.min(1, q * 1.6) * (1 - s * 0.35);
-      const solid = q >= 1 && s < 0.02;
+      l.mesh.rotation.x = inv * 0.9 - sw * 0.35;
+      l.mesh.rotation.y = sw * (i - 2.5) * 0.12;
+      l.mat.opacity = Math.min(1, q * 1.6) * (1 - sw);
+      l.mesh.visible = l.mat.opacity > 0.003;
+      const solid = q >= 1 && sw < 0.001;
       if (l.mat.transparent === solid) {
         l.mat.transparent = !solid;
         l.mat.needsUpdate = true;
       }
     });
-    // a vágósík a görgetéssel együtt mozog, ne vágja le az emelkedő betűket
-    this.clip.constant = -(L.wordY - L.wordH * 0.5 - 0.02) + (s > 0 ? 50 : 0);
+    this.clip.constant = -(L.wordY - L.wordH * 0.5 - 0.02) + (sw > 0 ? 50 : 0);
 
     // Fénycsík
     const sx = r.sweepX * L.w * 0.5;
     this.sweep.position.set(sx, L.wordY + 3, 9);
     this.sweep.target.position.set(sx * 0.6, L.wordY, 0);
     this.sweep.intensity = this.introFinished ? 0 : 260 * Math.max(0, 1 - Math.abs(r.sweepX) / 1.25);
-    this.scene.environmentRotation.y = r.envRot + px * 0.15;
+    this.scene.environmentRotation.y = r.envRot + px * 0.15 + fe * 1.2;
 
     if (this.dustMat) {
       this.dustMat.uniforms.uTime.value = time;
-      this.dustMat.uniforms.uAlpha.value = r.dust * (1 - s * 0.5);
+      this.dustMat.uniforms.uAlpha.value = r.dust * (1 - sw * 0.7);
       (this.dustMat.uniforms.uMouse.value as THREE.Vector3).lerp(this.pointerWorld, 0.08);
     }
+    if (this.cloakMat) {
+      const u = this.cloakMat.uniforms;
+      u.uTime.value = time;
+      (u.uCenter.value as THREE.Vector3).copy(this.emblem.position);
+      u.uScale.value = this.emblem.scale.x;
+      u.uAlpha.value = r.dust * (1 - fe);
+      (u.uMouse.value as THREE.Vector3).lerp(this.pointerWorld, 0.12);
+    }
+  }
+
+  /** Igaz, ha a jelenetnek görgetés közben rajzolnia kell (repülés tart). */
+  get isLanded() {
+    return this.landed;
   }
 
   dispose() {
@@ -573,6 +794,8 @@ export class HeroScene {
       else mat?.dispose();
     });
     this.pmrem?.dispose();
+    this.post?.rt.dispose();
+    delete document.documentElement.dataset.mark;
     this.renderer.dispose();
   }
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FAQ } from "../content";
 import { Words } from "./ui";
+import { Scramble } from "./fx";
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
@@ -8,7 +9,7 @@ export function Faq() {
     <section id="gyik" className="section faq" aria-labelledby="gyik-title">
       <div className="wrap faq__grid">
         <div className="section-head faq__head">
-          <p className="label">Gyakori kérdések</p>
+          <p className="label"><Scramble text="Gyakori kérdések" /></p>
           <h2 id="gyik-title">
             <Words text="Amit az első egyeztetés előtt érdemes tudni" />
           </h2>

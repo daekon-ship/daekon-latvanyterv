@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { MagneticLink, Words, Arrow } from "../components/ui";
 import { MarkSvg, WordmarkSvg } from "../brand/Logo";
 import { isMobileViewport, reducedMotion } from "../lib/motion";
@@ -37,6 +38,7 @@ export function Hero() {
       setPhase("copy");
     };
     const finish = () => {
+      sceneRef.current?.skipIntro();
       revealCopy();
       setPhase("done");
       setSkippable(false);
@@ -102,7 +104,7 @@ export function Hero() {
         const p = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.9)));
         hero.style.setProperty("--hs", p.toFixed(4));
         sceneRef.current?.setScroll(p);
-        if (p > 0.04 && document.documentElement.dataset.intro === "running") sceneRef.current?.skipIntro();
+        if (p > 0.04) sceneRef.current?.skipIntro();
       });
     };
     const io = new IntersectionObserver(([e]) => sceneRef.current?.setVisible(e.isIntersecting), {
@@ -127,7 +129,9 @@ export function Hero() {
       <div className="hero__atmo" aria-hidden="true" />
 
       {mode === "webgl" ? (
-        <canvas ref={canvasRef} className="hero__canvas" aria-hidden="true" />
+        // A vászon a <body>-ba kerül: rögzített réteg a fejléc fölött, így az
+        // embléma a görgetés végén a fejléc logójának helyére tud repülni.
+        createPortal(<canvas ref={canvasRef} className="hero__canvas" aria-hidden="true" />, document.body)
       ) : (
         <div className="hero__fallback" aria-hidden="true">
           <div className="hero__fb-stage">
