@@ -10,7 +10,7 @@
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
     "images": "node scripts/images.mjs",
-    "test:e2e": "python3 -I tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots"
+    "test:e2e": "python3 tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots"
   },
   "dependencies": {
     "gsap": "^3.12.5",

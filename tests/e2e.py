@@ -2,7 +2,7 @@
 DAEKON látványterv — böngészős ellenőrzés (Playwright, Chromium).
 
 Használat:
-  python3 -I tests/e2e.py <alap-URL> [képernyőkép-mappa]
+  python3 tests/e2e.py <alap-URL> [képernyőkép-mappa]
   pl. python3 -I tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots
 
 A WebGL szoftveres (SwiftShader) rendereléssel fut, így fej nélküli gépen is
