@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
@@ -61,9 +63,14 @@ jobs:
           name: e2e-kepernyokepek
           path: shots/
           if-no-files-found: ignore
-      - name: Publikálás a gh-pages ágra
+      - name: Pages-artefakt
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Publikálás a gh-pages ágra (tartalék forrás)
         run: |
-          cd dist
+          cp -r dist /tmp/ghp
+          cd /tmp/ghp
           touch .nojekyll
           cp index.html 404.html
           git init -q -b gh-pages
@@ -72,3 +79,17 @@ jobs:
           git add -A
           git commit -q -m "Pages: ${GITHUB_SHA}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Pages beállítása (bekapcsolás, ha még nincs)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deployment
+        uses: actions/deploy-pages@v4
