@@ -54,7 +54,7 @@ npm run test:e2e    # Playwright (Python): pip install playwright pillow
 
 ## Publikálás
 
-A `main` ágra érkező minden push után a `.github/workflows/pages.yml` lefuttatja a típusellenőrzést, a lintet, a Vite-buildet és a böngészős teszteket (az eredmény a `ci-eredmenyek` ágra is felkerül), és csak sikeres teszt után publikál: a GitHub Pages-re (forrás: **GitHub Actions**), tartalékként pedig a `gh-pages` ágra.
+A `main` ágra érkező minden push után a `.github/workflows/pages.yml` lefuttatja a típusellenőrzést, a lintet, a Vite-buildet és a böngészős teszteket (az eredmény a `ci-eredmenyek` ágra is felkerül), és csak sikeres teszt után teszi a kész `dist/`-et a `gh-pages` ágra. GitHub Pages forrása: **Deploy from a branch → gh-pages → / (root)**.
 
 ## Források
 
