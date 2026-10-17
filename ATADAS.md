@@ -2,7 +2,7 @@
 
 **Előnézet:** https://daekon-ship.github.io/daekon-latvanyterv/
 **A három irány és a döntés:** https://daekon-ship.github.io/daekon-latvanyterv/iranyok.html
-**Korábbi változat:** `v1-cinematic` git-címke (React + Three.js, sötét). Visszaállítás: `git checkout v1-cinematic`.
+**Korábbi változat:** `v1-cinematic` ág (React + Three.js, sötét).
 
 Ez a dokumentum a látványterv éles daekon.hu-ba való átültetéséhez készült. A látványterv build nélküli HTML/CSS/JS. Az éles oldal saját keretrendszerébe (SSR, `#ssr-*` szakaszok) komponensenként vihető át.
 

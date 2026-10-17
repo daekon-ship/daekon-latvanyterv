@@ -5,7 +5,7 @@ Működő, interaktív látványterv a daekon.hu új változatához. **Nem az é
 - **Előnézet:** https://daekon-ship.github.io/daekon-latvanyterv/
 - **A három kreatív irány és a döntés:** https://daekon-ship.github.io/daekon-latvanyterv/iranyok.html
 - **Átadás (tokenek, animációk, komponensek, könyvtárak):** [`ATADAS.md`](ATADAS.md)
-- **Korábbi, sötét Three.js-es változat:** `v1-cinematic` címke
+- **Korábbi, sötét Three.js-es változat:** `v1-cinematic` ág
 
 ## Koncepció
 
