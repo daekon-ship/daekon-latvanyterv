@@ -1,0 +1,198 @@
+/* ==========================================================================
+   DAEKON — „Tervlap” látványterv · alap: betűk, tokenek, rács, közös elemek
+   ========================================================================== */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../fonts/archivo-var.woff") format("woff");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("../fonts/plexmono-Regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("../fonts/plexmono-Medium.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  /* Papír és tinta — a márkakönyv világos változatából (#14161B tinta, #1636E7 kék) */
+  --paper: #eeede8;
+  --paper-2: #e6e5df;          /* rajzmező, kiemelt sáv */
+  --paper-3: #f6f5f1;          /* űrlapmező */
+  --ink: #14161b;
+  --ink-2: #464b54;            /* törzsszöveg másodlagos — 7.9:1 a papíron */
+  --ink-3: #6b707a;            /* jegyzet, címke — 4.6:1 a papíron */
+  --line: rgba(20, 22, 27, 0.13);
+  --line-2: rgba(20, 22, 27, 0.28);
+  --blue: #1636e7;             /* DAEKON kék világos alapon */
+  --blue-ink: #0f2ab8;         /* hover */
+  --blue-wash: rgba(22, 54, 231, 0.07);
+  /* Sötét lap (KIOSZ) */
+  --night: #14161b;
+  --night-2: #1c1f26;
+  --night-line: rgba(238, 237, 232, 0.14);
+  --night-ink: #eeede8;
+  --night-ink-2: #b4b8c0;
+  --blue-night: #2b50ff;       /* DAEKON kék sötét alapon */
+
+  /* Betűk */
+  --f-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Típusskála — mérsékelt, a cím sem nő 46 px fölé */
+  --t-h1: clamp(2rem, 1.35rem + 1.9vw, 2.875rem);     /* 32 → 46 */
+  --t-h2: clamp(1.625rem, 1.25rem + 1.1vw, 2.25rem);  /* 26 → 36 */
+  --t-h3: clamp(1.1875rem, 1.1rem + 0.3vw, 1.375rem); /* 19 → 22 */
+  --t-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17 → 19 */
+  --t-body: 1rem;              /* 16, sorköz 1.62 */
+  --t-small: 0.875rem;         /* 14 */
+  --t-label: 0.75rem;          /* 12 — széles nagybetűs címke */
+  --t-note: 0.75rem;           /* 12 — mono jegyzet */
+
+  /* Térköz — 4-es alap */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+  --gutter: clamp(20px, 3.2vw, 40px);
+  --maxw: 1360px;
+  --sheet-pad: clamp(64px, 7.5vw, 116px);   /* lapok közti függőleges levegő */
+  --header-h: 64px;
+
+  --ease: cubic-bezier(0.22, 0.75, 0.15, 1);
+  --radius: 2px;               /* tervlap: szinte szögletes */
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { overflow-x: clip; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 16px); }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  line-height: 1.62;
+  font-stretch: 100%;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--blue); color: #fff; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--ink); color: var(--paper); padding: 10px 14px; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Tipográfia ---------- */
+h1, h2, h3, h4 { margin: 0; font-weight: 580; letter-spacing: -0.012em; line-height: 1.12; }
+h1 { font-size: var(--t-h1); }
+h2 { font-size: var(--t-h2); }
+h3 { font-size: var(--t-h3); line-height: 1.25; letter-spacing: -0.006em; }
+p { margin: 0; }
+.lead { font-size: var(--t-lead); line-height: 1.55; color: var(--ink-2); }
+.muted { color: var(--ink-2); }
+
+/* széles, nagybetűs márkacímke (a márkakönyv plakátjairól) */
+.label {
+  font-size: var(--t-label);
+  font-stretch: 125%;
+  font-weight: 620;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+.note { font-family: var(--f-mono); font-size: var(--t-note); line-height: 1.5; color: var(--ink-3); letter-spacing: 0; }
+.blue { color: var(--blue); }
+
+/* ---------- Gombok, linkek ---------- */
+.btn {
+  --bg: var(--ink); --fg: var(--paper);
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 48px; padding: 0 20px;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--bg); border-radius: var(--radius);
+  font-size: 0.9375rem; font-weight: 560; text-decoration: none; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn:hover { --bg: var(--blue); }
+.btn svg { width: 16px; height: 16px; transition: transform 0.35s var(--ease); }
+.btn:hover svg { transform: translateX(3px); }
+.btn--line { --bg: transparent; --fg: var(--ink); border-color: var(--line-2); }
+.btn--line:hover { --bg: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--blue { --bg: var(--blue); }
+.btn--blue:hover { --bg: var(--blue-ink); }
+
+.link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 560; text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 2px; transition: background-size 0.4s var(--ease);
+}
+.link:hover { background-size: 0% 1px; background-position: 100% 100%; }
+.link svg { width: 14px; height: 14px; }
+
+.chip {
+  display: inline-flex; align-items: center;
+  font-family: var(--f-mono); font-size: 0.75rem; line-height: 1;
+  padding: 6px 9px; border: 1px solid var(--line-2); border-radius: var(--radius);
+  color: var(--ink-2); white-space: nowrap;
+}
+
+/* ---------- Lapfejléc (minden szekció egy rajzlap) ---------- */
+.sheet { position: relative; padding-block: var(--sheet-pad); }
+.sheet-rule {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s-4);
+  padding-bottom: var(--s-4); margin-bottom: clamp(36px, 5vw, 64px);
+  border-bottom: 1px solid var(--line-2);
+}
+.sheet-rule .label { color: var(--ink); }
+.sheet-rule .note { justify-self: end; }
+.sheet-rule__ticks { height: 9px; background:
+  repeating-linear-gradient(90deg, var(--line-2) 0 1px, transparent 1px 24px) 0 100% / 100% 5px no-repeat,
+  repeating-linear-gradient(90deg, var(--line-2) 0 1px, transparent 1px 120px) 0 100% / 100% 9px no-repeat; }
+.sheet-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); margin-bottom: clamp(36px, 5vw, 72px); }
+.sheet-head h2 { grid-column: 1 / span 6; }
+.sheet-head .lead { grid-column: 8 / span 5; align-self: end; }
+@media (max-width: 860px) {
+  .sheet-head { grid-template-columns: 1fr; gap: var(--s-4); }
+  .sheet-head h2, .sheet-head .lead { grid-column: 1; }
+  .sheet-rule__ticks { display: none; }
+  .sheet-rule { grid-template-columns: 1fr auto; }
+}
+
+/* szavanként felcsúszó cím (JS bontja; JS nélkül statikus) */
+.split-w { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.split-w > span { display: inline-block; }
+/* intro előtti állapot — a fejben lévő szkript 2,5 s után mindenképp feloldja */
+.intro-pending .hero [data-split], .intro-pending .hero__lead, .intro-pending .hero__cta, .intro-pending .hero__facts,
+.intro-pending .d-guides, .intro-pending .d-circles, .intro-pending .d-centers, .intro-pending .d-dims, .intro-pending .d-shape, .intro-pending .d-grid { opacity: 0; }
+
+/* Látványterv-jelölés */
+.proto-flag {
+  position: fixed; left: 12px; bottom: 12px; z-index: 40;
+  font-family: var(--f-mono); font-size: 11px; color: var(--ink-3);
+  background: var(--paper); border: 1px solid var(--line); padding: 4px 8px; pointer-events: none;
+}
+@media (max-width: 860px) { .proto-flag { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

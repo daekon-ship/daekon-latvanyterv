@@ -1,4 +1,4 @@
-name: Build, ellenőrzés és GitHub Pages
+name: Ellenőrzés és GitHub Pages
 
 on:
   push:
@@ -17,28 +17,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Függőségek
-        run: npm install --no-audit --no-fund
-      - name: Típusellenőrzés
-        run: npm run typecheck
-      - name: Lint
-        run: npm run lint
-      - name: Build (Vite, base /daekon-latvanyterv/)
-        run: npm run build
-      - name: Böngészős tesztek (Playwright, Chromium + SwiftShader WebGL)
+
+      - name: Böngészős tesztek (Playwright, Chromium)
         run: |
           pip install --quiet playwright==1.56.0 pillow
           python -m playwright install --with-deps chromium
-          npx vite preview --port 4173 --strictPort &
-          sleep 3
+          mkdir -p /tmp/srv && cp -r site /tmp/srv/daekon-latvanyterv
+          (cd /tmp/srv && python3 -m http.server 4173 >/dev/null 2>&1 &)
+          sleep 2
           set +e
           python3 tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots 2>&1 | tee e2e.log
-          code=${PIPESTATUS[0]}
-          echo $code > e2e.code
+          echo ${PIPESTATUS[0]} > e2e.code
           exit 0
+
       - name: Teszteredmény mentése a ci-eredmenyek ágra
         if: always()
         run: |
@@ -52,25 +43,18 @@ jobs:
           git add -A
           git commit -q -m "E2E: ${GITHUB_SHA}" || true
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" ci-eredmenyek || true
-      - name: Böngészős tesztek eredménye
+
+      - name: Tesztek eredménye
         run: test "$(cat e2e.code)" = "0"
-      - name: Tesztképek mentése
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-kepernyokepek
-          path: shots/
-          if-no-files-found: ignore
+
       - name: Publikálás a gh-pages ágra
         run: |
-          cp -r dist /tmp/ghp
+          cp -r site /tmp/ghp
           cd /tmp/ghp
           touch .nojekyll
-          cp index.html 404.html
           git init -q -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -q -m "Pages: ${GITHUB_SHA}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
-

@@ -1,64 +1,50 @@
-# DAEKON 2026 — látványterv-prototípus
+# DAEKON 2026 — „Tervlap” látványterv
 
-Működő, interaktív látványterv a daekon.hu új változatához. **Nem az éles oldal** — a daekon.hu-t és a `daekon-ship/daekon` repót nem módosítja.
+Működő, interaktív látványterv a daekon.hu új változatához. **Nem az éles oldal.** A daekon.hu-t és a `daekon-ship/daekon` repót nem módosítja.
 
-**Előnézet:** https://daekon-ship.github.io/daekon-latvanyterv/
+- **Előnézet:** https://daekon-ship.github.io/daekon-latvanyterv/
+- **A három kreatív irány és a döntés:** https://daekon-ship.github.io/daekon-latvanyterv/iranyok.html
+- **Átadás (tokenek, animációk, komponensek, könyvtárak):** [`ATADAS.md`](ATADAS.md)
+- **Korábbi, sötét Three.js-es változat:** `v1-cinematic` címke
 
-## Mi van benne
+## Koncepció
 
-| Szakasz | Megoldás |
-|---|---|
-| Hero | Three.js-jelenet (krómozott betűk, fémes-üveges embléma, utófeldolgozásban visszafogott kromatikus fénytörés, részecskefátyol): a Split D embléma extrudált, fémes 3D-objektumként érkezik a ködös térből, a márkakönyv vektoraiból épített 3D-s DAEKON-felirat **mögött** halad el, majd elé fordul (valódi mélységpuffer-takarás). A betűk vágósík alól emelkednek (maszkolt alapvonal). Fénycsík a fémen, ritka porszemcsék, amelyek a kurzor elől kitérnek. Egérre finom perspektíva, görgetésre kamera-hátrálás. Kihagyható intro, mobilon és ismételt látogatáskor rövidebb. |
-| Folytonosság | Görgetésre az embléma egy fordulattal pontosan a fejléc logójának helyére repül, ott átadja a helyét az SVG-logónak. |
-| Kinetikus sáv | „Egyedi fejlesztés. / Valódi rendszerek. / A te vállalkozásodra.” — görgetésre ellentétes irányba csúszó, kigyúló sorok (GSAP ScrollTrigger). |
-| KIOSZ Pizza | Asztalon rögzített jelenet: a görgetés lépteti az 5 réteget (rendelés, követés, konyha, admin, hűségprogram), a fotók clip-path-szal váltanak, a sematikus felületkártyák kaszkádban lépnek be. Mobilon érintéssel váltható fülek. |
-| KIOSZ (eszközök) | Böngészőablak (kioszpizza.hu, valódi fotók) + telefonkeret a sematikus felülettel. |
-| Munkák | Asztalon reflektorfényes lista + aktív projekt, váltáskor „liquid glass” fénytörés; a lemez kattintható (élő oldal). Mobilon függőleges kártyák. |
-| Ajánlatkérés | A daekon.hu asszisztense (átvéve, ugyanazokkal az árakkal): leírásból tájékoztató becslés, gyorsgombokkal bővíthető, e-mailként küldhető. |
-| Mikrointerakciók | Saját kurzor címkével, kattintásszikra, görgetési csík, dekódoló címkék, billenő kártyák, mágneses gombok (a daekon.hu eszköztárából). |
-| Szolgáltatások | 7 sor „a gond → amit csinálok” cserével, állandó sormagassággal. |
-| Vélemények | A daekon.hu 6 Facebook-ajánlása szó szerint, 3×2 rácsban, forráslinkkel. |
-| Rólam | Egyes szám első személy; a Split D jel szétnyíló varrattal, nagyon lassú háttér-mesh. |
-| Folyamat | Görgetésre töltődő idővonal, 5 lépés. |
-| GYIK, Kapcsolat | A daekon.hu kérdései; az űrlap előre kitöltött e-mailt nyit (mint az élő oldal), és nem állítja, hogy az üzenet megérkezett. |
+Az oldal egy rajzkészlet: kilenc számozott lap, a fejlécben élő lapszám-jelzővel.
 
-**Színállapot:** egyetlen, változatlan paletta (grafit-éj, lila atmoszféra, DAEKON fénykék `#2B50FF`, lime csak jelzésre). A háttér CSS-ből jön, a WebGL-vászon átlátszó → betöltés, hidratálás és intro alatt sincs lila→kék váltás.
-
-**Teljesítmény, hozzáférhetőség:** a Three.js külön, késleltetve töltődő csomag; shader-előfordítás; DPR-korlát; automatikus minőségcsökkentés lassú gépen; renderelés szüneteltetése, ha a hero nem látszik vagy a lap háttérben van; WebGL-kontextusvesztésnél és WebGL nélkül SVG-alapú tartalék nézet (`?nowebgl` paraméterrel kipróbálható); `prefers-reduced-motion` (alapból tiszteletben tartja; ilyenkor bal lent megjelenik egy „Animációk bekapcsolása” kapcsoló, vagy `?mozgas=1` paraméterrel is bekapcsolható); AVIF/WebP képek több méretben; skip link, fókuszállapotok, ARIA a füleken és lenyitókon.
-
-## Hero-koncepciók (art direction)
-
-| | A — Cinematic Object | B — Digital Architecture | C — Experimental Typography |
-|---|---|---|---|
-| Ötlet | A Split D 3D-s, fémes tárgyként érkezik, a krómozott DAEKON-felirat mögött és előtt halad, majd a fejléc logójává száll. | Absztrakt, térbeli „szoftver-architektúra”: rácsok, csomópontok, adatfolyam-vonalak, amelyek között a kamera halad. | Szerkesztőségi, mozgó betűkompozíció; a 3D csak kísérő. |
-| Karakter | Erős, egyértelműen DAEKON | Látványos, de általános „tech” | Elegáns, de nagy betűk nélkül gyenge (a túlméretezett tipó tiltott) |
-| Márkailleszkedés | A logójelből épül | Nem kötődik a márkához | Részleges |
-| Használhatóság / sebesség | Egy objektum, gyors; WebGL nélkül SVG-tartalék | Sok objektum, mobilon nehéz | Gyors |
-| **Döntés** | **Kiválasztva** | Elvetve: klisés, nehéz | Elvetve: a méretkorlát miatt nem tud érvényesülni |
-
-A C-ből a kinetikus sáv és a szavanként maszkolt címek maradtak meg.
+| Lap | Tartalom | Megoldás |
+|---|---|---|
+| 01 Kiindulás | Cím, lead, CTA | A Split D a márkakönyv geometriájából szerkesztődik meg, méretvonalakkal. CAD-célkereszt illesztéssel. Görgetésre a lap hátradől, a jel szétnyílik. |
+| 02 Rendszerkép | KIOSZ Pizza | Sötét lap, CSS 3D robbantott rétegrend (weboldal → rendelés → fiók/hűség → konyha/admin). Görgetésre rögzül, és rétegenként „lehántja” a rendszert. |
+| 03 Rajzjegyzék | 8 további éles oldal | Rajzjegyzék-táblázat és sematikus részletrajz a projekt jellemző funkciójáról: húzható csúszka, lapozó anyagminták, a vendégház saját fotója. |
+| 04 Műszaki leírás | 6 szolgáltatás | Számozott tételek a szolgáltatási aloldalak linkjeivel. |
+| 05 Ütemterv | Folyamat | Gantt-szerű sávok, végigfutó „most”-kurzorral. |
+| 06 Jóváhagyások | Facebook-ajánlások | Hat valódi vélemény aláírássorral és forráslinkkel. |
+| 07 Revíziótörténet | Rólam | A → B → C: játékosnév → CubeDAEKON 2011 → DAEKON. Üres, jelölt fotóhely. |
+| 08 Kérdések | GYIK | Lenyitható sorok. |
+| 09 Megrendelőlap | Ajánlatkérő | Az élő daekon.hu 5 lépéses űrlapja, tapadó összefoglalóval. |
 
 ## Futtatás
 
+A látványterv build nélküli, nincs `npm install`.
+
 ```bash
-npm install
-npm run dev         # fejlesztői szerver
-npm run typecheck
-npm run lint
-npm run build       # → dist/, base: /daekon-latvanyterv/
-npx vite preview --port 4173 &
-npm run test:e2e    # Playwright (Python): pip install playwright pillow
+cd site && python3 -m http.server 4173          # http://localhost:4173/
+# tesztek (a /daekon-latvanyterv/ útvonal miatt):
+mkdir -p /tmp/srv && ln -sfn "$PWD/site" /tmp/srv/daekon-latvanyterv
+(cd /tmp/srv && python3 -m http.server 4173 &)
+pip install playwright pillow && python -m playwright install chromium
+python3 tests/e2e.py http://localhost:4173/daekon-latvanyterv/ shots
 ```
 
-`npm run images` újragenerálja a képeket a `scripts/src-img/` eredetikből (sharp).
+URL-paraméterek: `?mozgas=1` bekapcsolja a mozgást csökkentett mozgás mellett is, `?mozgas=0` kikapcsolja.
 
 ## Publikálás
 
-A `main` ágra érkező minden push után a `.github/workflows/pages.yml` lefuttatja a típusellenőrzést, a lintet, a Vite-buildet és a böngészős teszteket (az eredmény a `ci-eredmenyek` ágra is felkerül), és csak sikeres teszt után teszi a kész `dist/`-et a `gh-pages` ágra. GitHub Pages forrása: **Deploy from a branch → gh-pages → / (root)**.
+Minden `main` push után a `.github/workflows/pages.yml` lefuttatja a böngészős teszteket. A teszteredmény és a képek a `ci-eredmenyek` ágra kerülnek. Sikeres teszt után a `site/` mappa a `gh-pages` ágra kerül.
 
 ## Források
 
-- Logók, színek: `daekon-ship/daekon` → `brand/svg/` (Split D, kivont Archivo wordmark).
-- Betűk: Archivo (változó, OFL) és IBM Plex Mono (OFL), helyben, magyar karakterkészletre szűkítve — `src/assets/fonts/`.
-- Fotók: KIOSZ Pizza és Nefelejcs Vendégház saját képei a `daekon-ship/daekon` repóból.
-- Tartalom (`src/content.ts`): a daekon.hu 2026. október 16-i szövegei; kitalált ügyfél, vélemény vagy szám nincs.
+- **Logó, színek:** `daekon-ship/daekon` → `brand/svg`. A világos változat: tinta `#14161B`, kék `#1636E7`.
+- **Betűk:** Archivo (változó) és IBM Plex Mono, OFL, helyben.
+- **Fotók:** a KIOSZ Pizza és a Nefelejcs Vendégház saját képei. Az eredetik a `scripts/src-img/` mappában vannak; az újragenerálás: `cd scripts && npm i && node images.mjs`.
+- **Tartalom (`site/assets/js/content.js`):** a daekon.hu szövegei és adatai. Kitalált ügyfél, vélemény, szám vagy ár nincs.

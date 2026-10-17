@@ -1,11 +1,11 @@
-// Képoptimalizálás: scripts/src-img → src/assets/img (WebP + AVIF, több szélesség).
+// Képoptimalizálás: scripts/src-img → site/assets/img (WebP + AVIF, több szélesség).
 // Futtatás: npm run images  (a kész fájlok be vannak commitolva, a build nem igényli)
 import sharp from "sharp";
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const SRC = new URL("./src-img/", import.meta.url).pathname;
-const OUT = new URL("../src/assets/img/", import.meta.url).pathname;
+const OUT = new URL("../site/assets/img/", import.meta.url).pathname;
 mkdirSync(OUT, { recursive: true });
 
 const jobs = [

@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "Csak a képek újragenerálásához kell (npm install && node images.mjs). Az oldal maga build nélküli.",
+  "dependencies": { "sharp": "^0.33.5" }
+}
