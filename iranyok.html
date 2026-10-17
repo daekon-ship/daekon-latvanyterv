@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAEKON — három kreatív irány · látványterv</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <style>
+    body { padding: 56px 0 96px; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line-2); margin-bottom: 56px; }
+    .top a { text-decoration: none; font-stretch: 125%; font-weight: 700; letter-spacing: .1em; display: inline-flex; gap: 10px; align-items: center; }
+    .top svg { width: 24px; height: 24px; }
+    .intro { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); margin-bottom: 64px; }
+    .intro h1 { grid-column: 1 / span 6; }
+    .intro .lead { grid-column: 8 / span 5; align-self: end; }
+    .dirs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+    .dir { border: 1px solid var(--line-2); background: var(--paper-3); display: flex; flex-direction: column; }
+    .dir.is-pick { border-color: var(--blue); box-shadow: inset 0 3px 0 var(--blue); }
+    .dir__pv { aspect-ratio: 16 / 10; position: relative; overflow: hidden; border-bottom: 1px solid var(--line-2); }
+    .dir__body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .dir__body h2 { font-size: 1.375rem; }
+    .dir dl { margin: 0; display: grid; gap: 8px; }
+    .dir dl div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 10px; font-size: .9375rem; border-top: 1px solid var(--line); padding-top: 8px; }
+    .verdict { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ink); font-size: .9375rem; }
+    .verdict b { color: var(--blue); }
+    /* mini-előnézetek (CSS-sel rajzolva, nem kép) */
+    .pv-a { background: var(--paper-2); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 16px 16px; }
+    .pv-a svg { position: absolute; right: 10%; top: 14%; height: 72%; }
+    .pv-a i { position: absolute; left: 8%; height: 6px; background: var(--ink); }
+    .pv-b { background: #0d0f14; }
+    .pv-b i { position: absolute; left: 8%; right: 8%; height: 1px; background: rgba(120, 140, 255, .35); }
+    .pv-b b { position: absolute; left: 8%; padding: 4px 8px; font: 500 11px var(--f-mono); color: #c9d2ff; border: 1px solid #2b50ff; }
+    .pv-b em { position: absolute; right: 8%; top: 20%; width: 34%; height: 60%; border: 1px solid #2b50ff; background: linear-gradient(transparent 70%, rgba(43, 80, 255, .25)); }
+    .pv-c { background: #e9e1d4; }
+    .pv-c span { position: absolute; left: 8%; top: 18%; font: 600 15px var(--f-sans); color: #3a2f25; }
+    .pv-c i { position: absolute; left: 8%; height: 3px; background: #9a8b78; }
+    .pv-c em { position: absolute; right: 8%; top: 14%; width: 30%; height: 72%; border: 1px dashed #9a8b78; }
+    .v1 { margin-top: 64px; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); border-top: 1px solid var(--line-2); padding-top: 32px; }
+    .v1 h2 { grid-column: 1 / span 4; font-size: 1.5rem; }
+    .v1 ul { grid-column: 6 / span 7; margin: 0; padding-left: 18px; color: var(--ink-2); display: grid; gap: 8px; }
+    .cta { margin-top: 48px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+    @media (max-width: 960px) {
+      .dirs { grid-template-columns: 1fr; }
+      .intro, .v1 { grid-template-columns: 1fr; }
+      .intro h1, .intro .lead, .v1 h2, .v1 ul { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="./"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="#14161B"/><path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="#1636E7"/></svg>DAEKON</a>
+      <span class="note">daekon.hu 2026 · koncepció · 2026. október 17.</span>
+    </div>
+
+    <div class="intro">
+      <h1>Három irány a daekon.hu-nak — és miért a Tervlap.</h1>
+      <p class="lead">Kiindulás: egyszemélyes fejlesztő, valódi, élesben futó rendszerek helyi vállalkozásoknak (étterem, építőipar, szállás, szerviz). A célközönség nem technikus: bizalmat, átláthatóságot és közvetlen kapcsolatot keres. A cél: több ajánlatkérés és hívás.</p>
+    </div>
+
+    <div class="dirs">
+      <article class="dir is-pick">
+        <div class="dir__pv pv-a" aria-hidden="true">
+          <svg viewBox="0 0 200 200"><path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="#14161B"/><path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="#1636E7"/><circle cx="110" cy="76" r="66" fill="none" stroke="#14161B" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/></svg>
+          <i style="top:30%;width:34%"></i><i style="top:40%;width:28%"></i><i style="top:56%;width:20%;height:14px;background:var(--blue)"></i>
+        </div>
+        <div class="dir__body">
+          <p class="label blue">A · Kiválasztva</p>
+          <h2>Tervlap — műszaki rajz</h2>
+          <dl>
+            <div><dt class="note">Hangulat</dt><dd>Világos papír, tinta, egyetlen márkakék. Pontos, nyugodt, kézműves.</dd></div>
+            <div><dt class="note">Betű</dt><dd>Archivo (márkabetű) + IBM Plex Mono a jegyzetekhez. Mérsékelt méretek.</dd></div>
+            <div><dt class="note">Elrendezés</dt><dd>Minden szekció egy rajzlap lapszámmal; rajzjegyzék, műszaki leírás, ütemterv, revíziótábla, szövegmező.</dd></div>
+            <div><dt class="note">Jellegzetes mozgás</dt><dd>A Split D a márkakönyv geometriájából szerkesztődik meg; CAD-célkereszt illesztéssel; görgetésre a lap hátradől, a KIOSZ-rendszer robbantott nézetben rétegenként nyílik.</dd></div>
+          </dl>
+          <p class="verdict"><b>Miért ez:</b> a márkának van hivatalos világos változata, így kiemelkedik a sötét „tech” sablonok közül. Az ügyfelek fele építőipari, nekik a tervrajz ismerős nyelv. Az üzenet is ezt mondja: előbb terv, aztán kód. Fotó nélkül is hiteles, mert a rajz a valódi funkciót mutatja.</p>
+        </div>
+      </article>
+
+      <article class="dir">
+        <div class="dir__pv pv-b" aria-hidden="true">
+          <i style="top:30%"></i><i style="top:48%"></i><i style="top:66%"></i>
+          <b style="top:18%">● Új rendelés · konyha</b><b style="top:56%">állapot: készül</b><em></em>
+        </div>
+        <div class="dir__body">
+          <p class="label">B · Elvetve</p>
+          <h2>Éjszakai műszak — élő üzemi konzol</h2>
+          <dl>
+            <div><dt class="note">Hangulat</dt><dd>Sötét vezérlőpult, élő adatfolyam, gépelő terminál.</dd></div>
+            <div><dt class="note">Jellegzetes mozgás</dt><dd>A KIOSZ rendelési folyamata valós idejű szimulációként fut (rendelés → riasztás → kész).</dd></div>
+          </dl>
+          <p class="verdict">Látványos, de visszacsúszik a mostani sötét, lila-kék „AI-startup” világba. A szimulált „élő” adat ráadásul könnyen kitalált számnak tűnik.</p>
+        </div>
+      </article>
+
+      <article class="dir">
+        <div class="dir__pv pv-c" aria-hidden="true">
+          <span>2011 → 2026</span><i style="top:38%;width:44%"></i><i style="top:46%;width:38%"></i><i style="top:54%;width:41%"></i><em></em>
+        </div>
+        <div class="dir__body">
+          <p class="label">C · Elvetve</p>
+          <h2>Napló — szerkesztőségi portré</h2>
+          <dl>
+            <div><dt class="note">Hangulat</dt><dd>Meleg, magazinszerű, személyes történet a CubeDAEKON-tól a vállalkozásig.</dd></div>
+            <div><dt class="note">Jellegzetes mozgás</dt><dd>Fejezetenként lapozó évszámok, fotósorozat.</dd></div>
+          </dl>
+          <p class="verdict">Emberi, de Roland saját fotói nélkül üres, és a munkák háttérbe szorulnak, pedig azok győznek meg. A történet revíziótáblaként átkerült az A irányba.</p>
+        </div>
+      </article>
+    </div>
+
+    <section class="v1">
+      <h2>Mit javít a korábbi „DAEKON 2026” tervhez képest?</h2>
+      <ul>
+        <li>A korábbi sötét, lila ködös, krómbetűs Three.js-hero helyett saját, felismerhető vizuális nyelv. A régi verzió a repóban <code>v1-cinematic</code> ágon megmaradt.</li>
+        <li>Az ajánlatkérő az élő daekon.hu jelenlegi, 5 lépéses űrlapját követi, összefoglalóval és ár nélkül. A korábbi árbecslő chat már nincs az élő oldalon.</li>
+        <li>A vélemények az élő oldal hat Facebook-ajánlását mutatják. Az egyik korábbi vélemény, Roland Kovácsé, ott nem szerepel; helyette Bense Boglárkáé.</li>
+        <li>A szolgáltatásoknál az élő oldal 6 tétele szerepel, a hozzájuk tartozó aloldal-linkekkel.</li>
+        <li>WebGL nélkül könnyebb és gyorsabb: a 3D CSS-ből készül, a mozgás GSAP-pal. Csökkentett mozgásnál minden azonnal a végállapotában látszik.</li>
+      </ul>
+    </section>
+
+    <p class="cta"><a class="btn" href="./">A kiválasztott irány megnyitása <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a><span class="note">Látványterv — nem az éles oldal.</span></p>
+  </div>
+</body>
+</html>

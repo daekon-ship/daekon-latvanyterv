@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>DAEKON — Egyedi szoftverfejlesztés a cégednek · látványterv</title>
+  <meta name="description" content="Egyedi weboldalakat, webalkalmazásokat, rendelési és foglalási rendszereket fejlesztek vállalkozásoknak, a tervezéstől az élesítésig személyesen. Bartalos Roland, DAEKON." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#eeede8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preload" href="assets/fonts/archivo-var.woff" as="font" type="font/woff" crossorigin />
+  <script>
+    /* intro-előkészítés: csak ha van JS és nincs csökkentett mozgás; biztonsági feloldás 2,5 s után */
+    (function (d) {
+      var forced = /[?&]mozgas=1/.test(location.search);
+      if (forced || !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        d.classList.add("intro-pending");
+        setTimeout(function () { d.classList.remove("intro-pending"); }, 2500);
+      }
+    })(document.documentElement);
+  </script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/sections.css" />
+</head>
+<body>
+<!-- Ikonkészlet -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-out" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2v11M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 16 16"><path d="M4.5 1.5h2l1 3.5-1.6 1.1a8 8 0 0 0 4 4L11 8.5l3.5 1v2a2 2 0 0 1-2 2A11 11 0 0 1 2.5 3.5a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="mark" viewBox="0 0 200 200"><path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="currentColor"/><path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="var(--mark-bowl, #1636E7)"/></symbol>
+</svg>
+
+<a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+
+<!-- ============================ FEJLÉC ============================ -->
+<header class="hdr" id="hdr">
+  <div class="hdr__in wrap">
+    <a class="brand" href="#top" aria-label="DAEKON — vissza a lap tetejére">
+      <svg class="brand__mark"><use href="#mark"/></svg>
+      <span class="brand__word">DAEKON</span>
+    </a>
+    <nav class="nav" aria-label="Fő navigáció">
+      <a href="#munkak"><span class="note">03</span>Munkák</a>
+      <a href="#szolgaltatasok"><span class="note">04</span>Szolgáltatások</a>
+      <a href="#folyamat"><span class="note">05</span>Folyamat</a>
+      <a href="#rolam"><span class="note">07</span>Rólam</a>
+      <a href="#kapcsolat"><span class="note">09</span>Kapcsolat</a>
+    </nav>
+    <div class="hdr__sheet note" aria-hidden="true"><span>Lap&nbsp;</span><b data-sheet-no>01</b><span>/09</span><span class="hdr__sheet-name" data-sheet-name>Kiindulás</span></div>
+    <a class="btn btn--blue hdr__cta" href="#ajanlat">Kérj ajánlatot</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav"><span class="sr-only">Menü</span><i></i><i></i></button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <nav class="wrap" aria-label="Mobil navigáció">
+      <a href="#rendszer"><span class="note">02</span>KIOSZ Pizza</a>
+      <a href="#munkak"><span class="note">03</span>Munkák</a>
+      <a href="#szolgaltatasok"><span class="note">04</span>Szolgáltatások</a>
+      <a href="#folyamat"><span class="note">05</span>Folyamat</a>
+      <a href="#velemenyek"><span class="note">06</span>Vélemények</a>
+      <a href="#rolam"><span class="note">07</span>Rólam</a>
+      <a href="#kerdesek"><span class="note">08</span>Kérdések</a>
+      <a href="#ajanlat"><span class="note">09</span>Ajánlatkérés</a>
+      <p class="mnav__contact"><a href="mailto:hello@daekon.hu">hello@daekon.hu</a><a href="tel:+36304539346">+36 30 453 9346</a></p>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobil alsó dokk: lapszám + mindig elérhető CTA -->
+<div class="dock" aria-label="Gyors elérés">
+  <div class="dock__sheet note" aria-hidden="true"><b data-sheet-no>01</b>/09 <span data-sheet-name>Kiindulás</span></div>
+  <a class="dock__call" href="tel:+36304539346" aria-label="Hívás: +36 30 453 9346"><svg><use href="#i-phone"/></svg></a>
+  <a class="btn btn--blue dock__cta" href="#ajanlat">Ajánlatkérés</a>
+</div>
+
+<main id="tartalom">
+
+<!-- ============================ LAP 01 — KIINDULÁS ============================ -->
+<section class="hero" id="top" data-sheet="01" data-sheet-name="Kiindulás" aria-labelledby="hero-title">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="label hero__eyebrow">Weboldalak · Webalkalmazások · Egyedi rendszerek</p>
+      <h1 id="hero-title" data-split>Egyedi szoftverfejlesztés a&nbsp;cégednek.</h1>
+      <p class="lead hero__lead">Egyedi weboldalakat, rendelési rendszereket, foglalási megoldásokat és üzleti szoftvereket fejlesztek, amelyek valóban megkönnyítik a vállalkozásod működését.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#ajanlat">Kérj ajánlatot <svg><use href="#i-arrow"/></svg></a>
+        <a class="link" href="#munkak">Éles munkáim <svg><use href="#i-down"/></svg></a>
+      </div>
+      <dl class="hero__facts">
+        <div><dt class="note">Ki dolgozik rajta</dt><dd>Egyetlen fejlesztő: én, Bartalos Roland</dd></div>
+        <div><dt class="note">Mettől meddig</dt><dd>Tervezés, fejlesztés, élesítés egy kézben</dd></div>
+        <div><dt class="note">Hol</dt><dd>Csévharaszt — országosan, online is</dd></div>
+      </dl>
+    </div>
+
+    <figure class="hero__draw" aria-labelledby="draw-cap">
+      <div class="draw" data-draw>
+        <svg class="draw__svg" viewBox="-44 -40 300 272" role="img" aria-label="A DAEKON Split D jelének szerkesztési rajza méretvonalakkal">
+          <defs>
+            <pattern id="g-minor" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(20,22,27,.07)" stroke-width=".4"/></pattern>
+            <pattern id="g-major" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#g-minor)"/><path d="M50 0H0V50" fill="none" stroke="rgba(20,22,27,.12)" stroke-width=".5"/></pattern>
+            <clipPath id="stem-clip"><rect class="stem-wipe" x="0" y="0" width="200" height="200"/></clipPath>
+            <clipPath id="bowl-clip"><rect class="bowl-wipe" x="0" y="0" width="200" height="200"/></clipPath>
+          </defs>
+          <rect class="d-grid" x="-44" y="-40" width="300" height="272" fill="url(#g-major)"/>
+          <g class="d-guides" fill="none" stroke-width=".45">
+            <path d="M-34 10H236M-34 44H236M-34 156H236M-34 190H236"/>
+            <path d="M16 -30V222M50 -30V222M71 -30V222M77 -30V222M110 -30V222M142 -30V222M176 -30V222"/>
+          </g>
+          <g class="d-circles" fill="none" stroke-width=".5">
+            <circle cx="110" cy="76" r="66"/><circle cx="110" cy="76" r="38"/>
+            <circle cx="110" cy="124" r="66"/><circle cx="110" cy="124" r="38"/>
+          </g>
+          <g class="d-centers" stroke-width=".6">
+            <path d="M104 76h12M110 70v12M104 124h12M110 118v12"/>
+          </g>
+          <g class="d-shape">
+            <g class="d-split" data-part="stem"><path class="d-stem" clip-path="url(#stem-clip)" d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z"/></g>
+            <g class="d-split" data-part="bowl"><path class="d-bowl" clip-path="url(#bowl-clip)" d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z"/></g>
+          </g>
+          <g class="d-dims" stroke-width=".55">
+            <g class="dim"><path d="M16 -14H71M16 -19v10M71 -19v10"/><text x="43.5" y="-19">55</text></g>
+            <g class="dim"><path d="M71 -27H77M71 -31v8M77 -31v8"/><text x="84" y="-25" text-anchor="start">rés 6</text></g>
+            <g class="dim"><path d="M206 10V190M201 10h10M201 190h10"/><text x="216" y="104" text-anchor="start">180</text></g>
+            <g class="dim"><path d="M110 76 156.7 29.3"/><text x="160" y="25" text-anchor="start">R66</text></g>
+            <g class="dim"><path d="M110 124 136.9 150.9"/><text x="141" y="162" text-anchor="start">R38</text></g>
+            <g class="dim"><path d="M-22 44V156M-27 44h10M-27 156h10"/><text x="-26" y="104" text-anchor="end" class="dim--v">112</text></g>
+          </g>
+          <g class="d-cursor" aria-hidden="true">
+            <path class="d-cursor__h" d="M-44 0H256"/><path class="d-cursor__v" d="M0 -40V232"/>
+            <rect class="d-cursor__snap" x="-3" y="-3" width="6" height="6"/>
+          </g>
+        </svg>
+        <p class="draw__readout note" aria-hidden="true"><span data-x>x —</span><span data-y>y —</span><span data-snap>illesztés: —</span></p>
+      </div>
+      <figcaption class="titleblock" id="draw-cap">
+        <div><span class="note">Tárgy</span><b>DAEKON jel — Split D</b></div>
+        <div><span class="note">Lépték</span><b>1 : 1 egység</b></div>
+        <div><span class="note">Rajzolta</span><b>B. R.</b></div>
+        <div><span class="note">Lap</span><b>01 / 09</b></div>
+      </figcaption>
+    </figure>
+  </div>
+  <p class="wrap hero__scroll note"><span>Görgess — a rajz szétnyílik</span></p>
+</section>
+
+<!-- ============================ LAP 02 — RENDSZERKÉP (KIOSZ) ============================ -->
+<section class="sheet system" id="rendszer" data-sheet="02" data-sheet-name="Rendszerkép" aria-labelledby="sys-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">02 — Rendszerkép</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">Kiemelt projekt · Monor · élesben</span></div>
+  </div>
+  <div class="system__pin">
+    <div class="wrap system__grid">
+      <div class="system__copy">
+        <p class="label system__eyebrow">Étterem · Rendelési rendszer</p>
+        <h2 id="sys-title" data-split>KIOSZ Pizza Napoletana</h2>
+        <p class="lead system__lead">Saját online rendelési rendszert fejlesztettem egy nápolyi pizzériának: a vendégek közvetlenül az étterem weboldalán rendelnek, közvetítő platform és rendelésenkénti jutalék nélkül.</p>
+
+        <ol class="layers" role="tablist" aria-label="A rendszer rétegei">
+          <li><button role="tab" id="lt-0" aria-controls="lp-0" aria-selected="true" data-layer="0"><span class="note">L1</span>Weboldal</button></li>
+          <li><button role="tab" id="lt-1" aria-controls="lp-1" aria-selected="false" data-layer="1"><span class="note">L2</span>Online rendelés</button></li>
+          <li><button role="tab" id="lt-2" aria-controls="lp-2" aria-selected="false" data-layer="2"><span class="note">L3</span>Fiók, hűség, kupon</button></li>
+          <li><button role="tab" id="lt-3" aria-controls="lp-3" aria-selected="false" data-layer="3"><span class="note">L4</span>Konyha és admin</button></li>
+        </ol>
+        <div class="layer-panels">
+          <div class="layer-panel is-on" role="tabpanel" id="lp-0" aria-labelledby="lt-0">
+            <p>Étlap, itallap, galéria, események és kapcsolat — mindenhol az étterem saját fotóival, nyugodt, igényes hangulatban.</p>
+            <p class="chips"><span class="chip">Étlap</span><span class="chip">Itallap</span><span class="chip">Galéria</span><span class="chip">Események</span></p>
+          </div>
+          <div class="layer-panel" role="tabpanel" id="lp-1" aria-labelledby="lt-1" hidden>
+            <p>Elvitel vagy kiszállítás, vendégként vagy fiókkal. A végösszeget csomagolással, kiszállítással és kedvezménnyel együtt mindig a szerver számolja. A rendelés állapota egyedi, nem nyilvános linken, valós időben követhető.</p>
+            <p class="chips"><span class="chip">Szerveroldali árazás</span><span class="chip">Szállítási zónák</span><span class="chip">Rendeléskövetés</span></p>
+          </div>
+          <div class="layer-panel" role="tabpanel" id="lp-2" aria-labelledby="lt-2" hidden>
+            <p>Vásárlói fiók rendelési előzményekkel, mentett címekkel és „Újrarendelem” gombbal. Kétszintű hűségprogram és saját kuponok: százalékos, fix összegű és ingyenes kiszállítás.</p>
+            <p class="chips"><span class="chip">Vásárlói fiók</span><span class="chip">Hűségprogram</span><span class="chip">Kuponok</span></p>
+          </div>
+          <div class="layer-panel" role="tabpanel" id="lp-3" aria-labelledby="lt-3" hidden>
+            <p>Új rendelésnél teljes képernyős, hangjelzéses riasztás a konyhán. Rendelésállapotok, szerepkörök, „elfogyott” kapcsoló és eseménykezelés — a napi működéshez nem kell kódolni.</p>
+            <p class="chips"><span class="chip">Konyhai riasztás</span><span class="chip">Szerepkörök</span><span class="chip">Elfogyott-kapcsoló</span></p>
+          </div>
+        </div>
+
+        <div class="system__cta">
+          <a class="btn btn--blue" href="https://daekon.hu/referenciak/kiosz-pizza/" target="_blank" rel="noopener">Esettanulmány <svg><use href="#i-out"/></svg></a>
+          <a class="link" href="https://kioszpizza.hu/" target="_blank" rel="noopener">kioszpizza.hu <svg><use href="#i-out"/></svg><span class="sr-only">(új lapon nyílik)</span></a>
+        </div>
+        <p class="note system__foot">React + TypeScript · PHP 8 · MySQL. Az asztalfoglalási modul elkészült, az étterem kérésére jelenleg szünetel.</p>
+      </div>
+
+      <div class="system__stage" aria-hidden="true">
+        <div class="iso" data-iso>
+          <!-- alulról felfelé: L4 konyha/admin → L1 weboldal -->
+          <div class="plane plane--kitchen" data-plane="3">
+            <span class="plane__tag note">L4 · Konyha és admin</span>
+            <div class="kb">
+              <div class="kb__alert"><b>Új rendelés</b><span class="note">riasztás + hang</span></div>
+              <div class="kb__cols">
+                <div><span class="note">Új</span><i></i><i></i></div>
+                <div><span class="note">Készül</span><i></i></div>
+                <div><span class="note">Kész</span><i></i><i></i></div>
+              </div>
+              <div class="kb__toggle"><span class="note">Elfogyott</span><em></em></div>
+            </div>
+          </div>
+          <div class="plane plane--account" data-plane="2">
+            <span class="plane__tag note">L3 · Fiók, hűség, kupon</span>
+            <div class="acc">
+              <div class="acc__tier"><span class="note">Hűségszint</span><div class="acc__steps"><i class="on"></i><i></i></div><span class="note">1 · 2</span></div>
+              <div class="acc__row"><span>Korábbi rendelés</span><b class="acc__btn">Újrarendelem</b></div>
+              <div class="acc__row"><span>Mentett cím</span><i class="acc__line"></i></div>
+              <div class="acc__coupon"><span class="note">KUPON</span><span>% · fix · ingyenes szállítás</span></div>
+            </div>
+          </div>
+          <div class="plane plane--order" data-plane="1">
+            <span class="plane__tag note">L2 · Online rendelés</span>
+            <div class="ord">
+              <div class="ord__seg"><b>Elvitel</b><span>Kiszállítás</span></div>
+              <div class="ord__line"><span>Margherita</span><span class="note">1×</span></div>
+              <div class="ord__line"><span>Kiszállítási zóna</span><span class="note">település szerint</span></div>
+              <div class="ord__line ord__line--sum"><span>Végösszeg</span><span class="note">a szerver számolja</span></div>
+              <div class="ord__btn">Rendelés leadása</div>
+            </div>
+          </div>
+          <div class="plane plane--web" data-plane="0">
+            <span class="plane__tag note">L1 · Weboldal</span>
+            <div class="web">
+              <div class="web__bar"><i></i><i></i><i></i><span class="note">kioszpizza.hu</span></div>
+              <picture>
+                <source type="image/avif" srcset="assets/img/kiosz-pizza-640.avif 640w, assets/img/kiosz-pizza-1200.avif 1200w" sizes="420px" />
+                <img src="assets/img/kiosz-pizza-640.webp" srcset="assets/img/kiosz-pizza-640.webp 640w, assets/img/kiosz-pizza-1200.webp 1200w" sizes="420px" alt="" width="640" height="427" loading="lazy" />
+              </picture>
+              <div class="web__nav"><span>Étlap</span><span>Galéria</span><span>Események</span><b>Rendelés</b></div>
+            </div>
+          </div>
+        </div>
+        <p class="system__photo note">Fotó: KIOSZ Pizza Napoletana saját képe</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LAP 03 — MUNKÁK (RAJZJEGYZÉK) ============================ -->
+<section class="sheet works" id="munkak" data-sheet="03" data-sheet-name="Munkák" aria-labelledby="works-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">03 — Rajzjegyzék</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">8 további éles oldal</span></div>
+    <div class="sheet-head">
+      <h2 id="works-title" data-split>Éles rendszerek, valódi ügyfeleknek.</h2>
+      <p class="lead">Ügyfélmegbízásban készült, élesben futó weboldalak és rendszerek. Válassz egy sort: mellette a munka jellemző részletét látod rajzban, és bármelyiket megnyithatod működés közben.</p>
+    </div>
+
+    <div class="works__grid">
+      <div class="register" role="list" data-register>
+        <div class="register__head note" aria-hidden="true"><span>Sz.</span><span>Projekt</span><span>Ágazat</span><span>Ami elkészült</span><span></span></div>
+        <!-- sorok: main.js tölti ki a content.js adataiból; JS nélkül is olvasható alapváltozat -->
+        <noscript><p class="muted">A projektlista: mesegombolyag.hu, nefelejcsbakonybel.hu, dieselmotorjavitas.hu, epuletesmedence.hu, tetojavitomester.hu, lapozunk.hu, gt-lakasfelujitas.hu, rovarirtofiuk.hu.</p></noscript>
+      </div>
+      <aside class="detail" aria-live="polite" data-detail>
+        <div class="detail__frame">
+          <div class="detail__head note"><span data-detail-no>A-01</span><span>Részletrajz · sematikus</span></div>
+          <div class="detail__art" data-detail-art></div>
+          <div class="detail__foot">
+            <div><p class="detail__name" data-detail-name></p><p class="note" data-detail-domain></p></div>
+            <a class="btn btn--line" data-detail-link href="#" target="_blank" rel="noopener">Megnyitás <svg><use href="#i-out"/></svg></a>
+          </div>
+        </div>
+        <p class="note detail__disclaimer">A rajz a funkciót mutatja, nem képernyőkép. A Nefelejcs fotója a vendégház saját képe.</p>
+      </aside>
+    </div>
+    <p class="works__cta"><a class="btn" href="#ajanlat">Hasonló rendszert szeretnél? Kérj ajánlatot <svg><use href="#i-arrow"/></svg></a></p>
+  </div>
+</section>
+
+<!-- ============================ LAP 04 — SZOLGÁLTATÁSOK (MŰSZAKI LEÍRÁS) ============================ -->
+<section class="sheet services" id="szolgaltatasok" data-sheet="04" data-sheet-name="Szolgáltatások" aria-labelledby="srv-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">04 — Műszaki leírás</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">6 tétel</span></div>
+    <div class="sheet-head">
+      <h2 id="srv-title" data-split>A weboldaltól a saját rendszerig.</h2>
+      <p class="lead">Nemcsak bemutatkozó oldalt készítek: ha kell, online rendelést, időpontfoglalót, saját adminfelületet, ügyfélkezelőt, webáruházat vagy automatizálást is fejlesztek.</p>
+    </div>
+    <ol class="spec">
+      <li class="spec__item">
+        <span class="spec__no note">4.1</span>
+        <h3>Egyedi szoftverfejlesztés</h3>
+        <p>Ha a folyamataidat egyetlen dobozos program sem fedi le, a működésedre szabott rendszert fejlesztek, amely nem kényszerít kerülőutakra.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/egyedi-webalkalmazas/">Egyedi webalkalmazás <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+      <li class="spec__item">
+        <span class="spec__no note">4.2</span>
+        <h3>Weboldal- és webalkalmazás-fejlesztés</h3>
+        <p>Gyors, mobilbarát weboldalt és webalkalmazást készítek, amely nemcsak bemutat, hanem érdeklődőt és ajánlatkérést is hoz.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/weboldalkeszites/">Weboldalkészítés <svg><use href="#i-arrow"/></svg></a><a class="link" href="https://daekon.hu/webshop-keszites/">Webáruház <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+      <li class="spec__item">
+        <span class="spec__no note">4.3</span>
+        <h3>Online rendelési rendszerek</h3>
+        <p>A közvetítő platformok jutaléka helyett saját rendelési felületet építek étlappal, kosárral és rendeléskezeléssel; a bevétel és a vendégadat nálad marad.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/ettermi-rendelesi-rendszer/">Éttermi rendelési rendszer <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+      <li class="spec__item">
+        <span class="spec__no note">4.4</span>
+        <h3>Foglalási és adminrendszerek</h3>
+        <p>A telefonos és üzenetes egyeztetés helyett időpontfoglalást és áttekinthető adminfelületet fejlesztek: foglalások, ügyfelek és értesítések egy helyen.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/idopontfoglalo-rendszer/">Időpontfoglaló rendszer <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+      <li class="spec__item">
+        <span class="spec__no note">4.5</span>
+        <h3>Üzleti automatizálás</h3>
+        <p>Az ismétlődő kézi adminisztrációt automatizálom: értesítések, összesítők és adatátvitel a rendszereid között, hogy a munkaidő a lényegre jusson.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/vallalkozasi-automatizalas/">Üzleti automatizálás <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+      <li class="spec__item">
+        <span class="spec__no note">4.6</span>
+        <h3>Karbantartás és továbbfejlesztés</h3>
+        <p>Élesítés után is felügyelem, frissítem és bővítem a rendszert, így egy működő megoldás nem avul el és nem marad gazdátlanul.</p>
+        <p class="spec__links"><a class="link" href="https://daekon.hu/weboldal-karbantartas/">Karbantartás <svg><use href="#i-arrow"/></svg></a></p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ LAP 05 — FOLYAMAT (ÜTEMTERV) ============================ -->
+<section class="sheet process" id="folyamat" data-sheet="05" data-sheet-name="Folyamat" aria-labelledby="proc-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">05 — Ütemterv</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">5 fázis, mérföldkövekkel</span></div>
+    <div class="sheet-head">
+      <h2 id="proc-title" data-split>Így dolgozom.</h2>
+      <p class="lead">A pontos ütemezést az ajánlatban mérföldkövekre bontva kapod meg, és menet közben is látod, hol tart a munka.</p>
+    </div>
+    <div class="gantt" data-gantt>
+      <div class="gantt__cursor" aria-hidden="true"><span class="note">most</span></div>
+      <ol>
+        <li class="gantt__row" style="--i:0">
+          <div class="gantt__label"><span class="note">5.1</span><h3>Megismerem az elképzelésedet</h3></div>
+          <div class="gantt__track"><span class="gantt__bar"></span><i class="gantt__ms" title="mérföldkő"></i></div>
+          <p class="gantt__text">Átbeszélem veled, mire van szüksége a vállalkozásodnak, hol vész el most idő vagy ügyfél, és mit érdemes fejleszteni.</p>
+        </li>
+        <li class="gantt__row" style="--i:1">
+          <div class="gantt__label"><span class="note">5.2</span><h3>Megtervezem</h3></div>
+          <div class="gantt__track"><span class="gantt__bar"></span><i class="gantt__ms"></i></div>
+          <p class="gantt__text">Elkészítem a látványtervet és a működési tervet, így fejlesztés előtt pontosan látod, mi és hogyan fog működni.</p>
+        </li>
+        <li class="gantt__row" style="--i:2">
+          <div class="gantt__label"><span class="note">5.3</span><h3>Kifejlesztem</h3></div>
+          <div class="gantt__track"><span class="gantt__bar"></span><i class="gantt__ms"></i></div>
+          <p class="gantt__text">Az elfogadott terv alapján, mérföldkövekre bontva építem meg a weboldalt vagy a rendszert. A haladást menet közben is láthatod.</p>
+        </li>
+        <li class="gantt__row" style="--i:3">
+          <div class="gantt__label"><span class="note">5.4</span><h3>Tesztelem</h3></div>
+          <div class="gantt__track"><span class="gantt__bar"></span><i class="gantt__ms"></i></div>
+          <p class="gantt__text">Indulás előtt végigtesztelem a kritikus folyamatokat (rendelés, foglalás, űrlapok, adminfelület) mobilon és asztali gépen.</p>
+        </li>
+        <li class="gantt__row" style="--i:4">
+          <div class="gantt__label"><span class="note">5.5</span><h3>Élesítem</h3></div>
+          <div class="gantt__track"><span class="gantt__bar"></span><i class="gantt__ms"></i></div>
+          <p class="gantt__text">Élesítem, felügyelem és frissítem a rendszert. A további fejlesztések ugyanarra a kódbázisra épülnek.</p>
+        </li>
+      </ol>
+      <p class="note gantt__legend">A sávok a sorrendet mutatják, nem időtartamot — az az ajánlatban szerepel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LAP 06 — VÉLEMÉNYEK (JÓVÁHAGYÁSOK) ============================ -->
+<section class="sheet reviews" id="velemenyek" data-sheet="06" data-sheet-name="Vélemények" aria-labelledby="rev-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">06 — Jóváhagyások</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">Forrás: Facebook-ajánlások</span></div>
+    <div class="sheet-head">
+      <h2 id="rev-title" data-split>Akik már engem választottak.</h2>
+      <div class="reviews__meta">
+        <p class="lead">Hiteles, forrással jelölt vélemények a közös munkáról.</p>
+        <p class="note">100% ajánlja · 7 ajánlás a Facebookon (ellenőrizve: 2026. október 16.). Itt 6 olvasható, mindegyik megtalálható a Facebookon.</p>
+      </div>
+    </div>
+    <div class="slips" data-slips></div>
+    <div class="reviews__actions">
+      <a class="btn btn--line" href="https://www.facebook.com/profile.php?id=61593734641713&amp;sk=reviews" target="_blank" rel="noopener">Ajánlás írása Facebookon <svg><use href="#i-out"/></svg></a>
+      <a class="link" href="mailto:hello@daekon.hu?subject=V%C3%A9lem%C3%A9ny%20a%20DAEKON%20munk%C3%A1j%C3%A1r%C3%B3l">Vélemény küldése e-mailben <svg><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LAP 07 — RÓLAM (REVÍZIÓTÖRTÉNET) ============================ -->
+<section class="sheet about" id="rolam" data-sheet="07" data-sheet-name="Rólam" aria-labelledby="about-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">07 — Revíziótörténet</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">2011 → 2026</span></div>
+    <div class="about__grid">
+      <div class="about__copy">
+        <h2 id="about-title" data-split>A DAEKON mögött egyetlen fejlesztő áll.</h2>
+        <p class="lead">Bartalos Roland vagyok. A tervezést, a fejlesztést és az élesítést személyesen végzem, így nálam közvetlenül azzal egyeztetsz, aki a munkát el is végzi.</p>
+        <p class="muted">A DAEKON nevet nem a vállalkozásomhoz találtam ki. Már gyerekként ezt használtam az interneten, szinte minden játékban és online közösségben. Egyszerűen hozzám nőtt. Azóta rengeteget változott az internet, a technológia és az eszközök is — a név nem.</p>
+        <figure class="portrait">
+          <div class="portrait__slot" role="img" aria-label="Üres fotóhely Roland saját portréjának">
+            <svg viewBox="0 0 120 150" aria-hidden="true"><path d="M0 0L120 150M120 0L0 150" stroke="currentColor" stroke-width=".6" fill="none"/></svg>
+          </div>
+          <figcaption class="note">Fotóhely — Roland saját portréja kerül ide (nincs helyettesítő kép).</figcaption>
+        </figure>
+      </div>
+      <div class="revs">
+        <table class="revtable">
+          <caption class="sr-only">A DAEKON név revíziói</caption>
+          <thead><tr><th scope="col" class="note">Rev.</th><th scope="col" class="note">Mikor</th><th scope="col" class="note">Változás</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rev">A</span></td><td class="note">gyerekkor</td><td><b>DAEKON, a játékosnév.</b> Szinte minden játékban és online közösségben ezt a nevet használtam.</td></tr>
+            <tr><td><span class="rev">B</span></td><td class="note">2011</td><td><b>CubeDAEKON — saját WordPress-blog, 14 évesen.</b> Játékokról és az engem érdeklő dolgokról írtam. Az első oldalam még mindig elérhető. <a class="link" href="https://cubedaekon.wordpress.com/" target="_blank" rel="noopener">cubedaekon.wordpress.com <svg><use href="#i-out"/></svg><span class="sr-only">(új lapon nyílik)</span></a></td></tr>
+            <tr class="is-current"><td><span class="rev rev--now">C</span></td><td class="note">ma</td><td><b>DAEKON — a saját szoftverfejlesztő vállalkozásom.</b> Weboldalak és egyedi szoftverek vállalkozásoknak, ugyanazon a néven.</td></tr>
+          </tbody>
+        </table>
+        <ul class="principles">
+          <li><span class="note">Egyeztetés</span>Velem beszélsz, nincs közvetítő.</li>
+          <li><span class="note">Kód</span>A rendszer a te működésedre készül, nem sablonra.</li>
+          <li><span class="note">Utána</span>Élesítés után is számíthatsz rám, ugyanarra a kódbázisra építve.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LAP 08 — KÉRDÉSEK ============================ -->
+<section class="sheet faq" id="kerdesek" data-sheet="08" data-sheet-name="Kérdések" aria-labelledby="faq-title">
+  <div class="wrap faq__grid">
+    <div>
+      <div class="sheet-rule sheet-rule--short"><span class="label">08 — Kérdések</span></div>
+      <h2 id="faq-title" data-split>Amit az első egyeztetés előtt érdemes tudni.</h2>
+    </div>
+    <div class="acc-list">
+      <details><summary>Mennyibe kerül egy weboldal vagy egyedi rendszer?<svg><use href="#i-plus"/></svg></summary><p>A terjedelemtől és a funkcióktól függ, ezért fix árlistát nem adok. Egy rövid egyeztetés után írásos ajánlatot kapsz, amely pontosan leírja, mit tartalmaz az ár.</p></details>
+      <details><summary>Mennyi idő alatt készül el?<svg><use href="#i-plus"/></svg></summary><p>A projekt méretétől függ. Az ütemezést az ajánlatban mérföldkövekre bontva adom meg, és menet közben is láthatod, hol tart a munka.</p></details>
+      <details><summary>Kivel tartom a kapcsolatot a projekt során?<svg><use href="#i-plus"/></svg></summary><p>Velem. A DAEKON egyszemélyes vállalkozás: az egyeztetést, a tervezést, a fejlesztést és az élesítést is én végzem.</p></details>
+      <details><summary>Csak a környéken vállalsz munkát?<svg><use href="#i-plus"/></svg></summary><p>Nem. Az egész országból vállalok megbízást; az egyeztetés online is működik, a környéken személyesen is.</p></details>
+      <details><summary>Kezelhetem magam a tartalmat?<svg><use href="#i-plus"/></svg></summary><p>Igen, ha szükséges. Átbeszélem veled, mit szeretnél magad szerkeszteni, és ehhez igazítom az adminfelületet.</p></details>
+      <details><summary>Mi történik az átadás után?<svg><use href="#i-plus"/></svg></summary><p>Ha kéred, élesítés után is felügyelem és karbantartom a rendszert. A további fejlesztések ugyanarra a kódbázisra épülnek.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LAP 09 — AJÁNLATKÉRÉS (MEGRENDELŐLAP) ============================ -->
+<section class="sheet quote" id="kapcsolat" data-sheet="09" data-sheet-name="Ajánlatkérés" aria-labelledby="quote-title">
+  <div class="wrap">
+    <div class="sheet-rule"><span class="label">09 — Megrendelőlap</span><span class="sheet-rule__ticks" aria-hidden="true"></span><span class="note">Díjmentes · nem kötelez semmire</span></div>
+    <div class="quote__intro">
+      <div>
+        <h2 id="quote-title" data-split>Mesélj a projektedről.</h2>
+        <p class="lead">Jelöld meg, amire szükséged lehet; elég nagy vonalakban. A részleteket egy rövid egyeztetésen pontosítom veled. Általában egy munkanapon belül válaszolok.</p>
+      </div>
+      <ul class="contact-lines">
+        <li><span class="note">E-mail</span><a href="mailto:hello@daekon.hu">hello@daekon.hu</a></li>
+        <li><span class="note">Telefon</span><a href="tel:+36304539346">+36 30 453 9346</a></li>
+        <li><span class="note">Facebook</span><a href="https://www.facebook.com/profile.php?id=61593734641713" target="_blank" rel="noopener">DAEKON oldal</a></li>
+      </ul>
+    </div>
+
+    <form class="qform" id="ajanlat" novalidate data-quote>
+      <div class="qform__fields">
+        <fieldset class="qstep">
+          <legend><span class="note">01</span>Elérhetőség</legend>
+          <div class="qgrid">
+            <label class="field"><span>Név <em>*</em></span><input name="name" autocomplete="name" required /></label>
+            <label class="field"><span>E-mail <em>*</em></span><input name="email" type="email" autocomplete="email" required /></label>
+            <label class="field"><span>Telefonszám</span><input name="phone" type="tel" autocomplete="tel" /></label>
+            <label class="field"><span>Cégnév</span><input name="company" autocomplete="organization" /></label>
+            <label class="field field--wide"><span>Jelenlegi weboldal (ha van)</span><input name="website" type="url" inputmode="url" placeholder="https://" /></label>
+            <input class="hp" name="company_site" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          </div>
+        </fieldset>
+        <fieldset class="qstep">
+          <legend><span class="note">02</span>Pár mondat a projektről <small>mit szeretnél megoldani?</small></legend>
+          <label class="field field--wide"><span class="sr-only">A projekt leírása</span><textarea name="message" rows="4" placeholder="Pl.: Étteremláncunk számára saját online rendelési rendszert keresünk futárkezeléssel és konyhai kijelzővel."></textarea></label>
+        </fieldset>
+        <fieldset class="qstep">
+          <legend><span class="note">03</span>Milyen megoldásra van szükséged? <small>nem kötelező</small></legend>
+          <div class="toggles" data-group="type"></div>
+        </fieldset>
+        <fieldset class="qstep">
+          <legend><span class="note">04</span>Milyen funkciók kellenek? <small>nem kötelező</small></legend>
+          <button type="button" class="qmore" aria-expanded="false" aria-controls="qfeat">Konkrét funkciók megjelölése (31 lehetőség) <svg><use href="#i-plus"/></svg></button>
+          <div class="qfeat" id="qfeat" hidden data-features></div>
+        </fieldset>
+        <fieldset class="qstep">
+          <legend><span class="note">05</span>Mikorra kellene? <small>nem kötelező</small></legend>
+          <div class="toggles" data-group="deadline"></div>
+        </fieldset>
+      </div>
+
+      <aside class="qsum" aria-labelledby="qsum-title">
+        <div class="qsum__in">
+          <div class="qsum__head"><h3 id="qsum-title" class="label">Összefoglaló</h3><span class="note" data-sum-count>0 kiválasztva</span></div>
+          <dl class="qsum__rows">
+            <div><dt class="note">Típus</dt><dd data-sum="type">Még nincs kiválasztva</dd></div>
+            <div><dt class="note">Funkciók</dt><dd data-sum="features">Még nincs kiválasztva</dd></div>
+            <div><dt class="note">Határidő</dt><dd data-sum="deadline">—</dd></div>
+          </dl>
+          <label class="consent"><input type="checkbox" name="consent" required /><span>Elolvastam az <a href="https://daekon.hu/adatkezeles.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>, és hozzájárulok, hogy az ajánlatkérés megválaszolásához kezeld az adataimat.</span></label>
+          <button class="btn btn--blue qsum__send" type="submit">Ajánlatkérés elküldése <svg><use href="#i-arrow"/></svg></button>
+          <p class="qsum__status" role="status" aria-live="polite" data-status></p>
+          <p class="note">Díjmentes és kötelezettségmentes. Az összefoglaló nem árajánlat és nem automatikus árbecslés: a pontos árat egy rövid egyeztetés után, írásban kapod meg.</p>
+          <p class="note qsum__proto">Látványterv: a küldés itt előre kitöltött e-mailt nyit. Az éles oldalon a meglévő daekon.hu ajánlatkérő küldi el.</p>
+        </div>
+      </aside>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ SZÖVEGMEZŐ (LÁBLÉC) ============================ -->
+<footer class="foot" aria-label="Lábléc">
+  <div class="wrap">
+    <div class="cartouche">
+      <div class="cartouche__brand">
+        <svg class="cartouche__mark"><use href="#mark"/></svg>
+        <div><b>DAEKON</b><span class="note">Egyedi szoftverfejlesztés vállalkozásoknak</span></div>
+      </div>
+      <div class="cartouche__cell"><span class="note">Tervezte és fejlesztette</span><b>Bartalos Roland</b></div>
+      <div class="cartouche__cell"><span class="note">Helyszín</span><b>Csévharaszt, Magyarország</b></div>
+      <div class="cartouche__cell"><span class="note">E-mail</span><a href="mailto:hello@daekon.hu">hello@daekon.hu</a></div>
+      <div class="cartouche__cell"><span class="note">Telefon</span><a href="tel:+36304539346">+36 30 453 9346</a></div>
+      <div class="cartouche__cell"><span class="note">Közösség</span><a href="https://www.facebook.com/profile.php?id=61593734641713" target="_blank" rel="noopener">Facebook</a></div>
+      <div class="cartouche__cell"><span class="note">Lap</span><b>09 / 09</b></div>
+      <div class="cartouche__cell cartouche__cell--legal"><a href="https://daekon.hu/adatkezeles.html">Adatkezelés</a><a href="https://daekon.hu/impresszum.html">Impresszum</a><span class="note">© 2026 DAEKON</span></div>
+    </div>
+    <p class="foot__proto note">Látványterv, nem az éles oldal — <a href="https://daekon.hu/">daekon.hu</a> · <a href="iranyok.html">A három kreatív irány</a> · <a href="#top">Vissza a tetejére</a></p>
+  </div>
+</footer>
+
+<p class="proto-flag" aria-hidden="true">Látványterv · Tervlap</p>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/content.js" defer></script>
+<script src="assets/js/drawings.js" defer></script>
+<script src="assets/js/quote.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
