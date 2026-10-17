@@ -1,0 +1,212 @@
+[
+  {
+    "nev": "360px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "360px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "360px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "360px: mobil dokk (Ajánlatkérés) elérhető",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "390px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "390px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "390px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "390px: mobil dokk (Ajánlatkérés) elérhető",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "430px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "430px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "430px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "430px: mobil dokk (Ajánlatkérés) elérhető",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "768px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "768px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "768px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "768px: mobil dokk (Ajánlatkérés) elérhető",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1024px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "1024px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1024px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1366px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "1366px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1366px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1920px: nincs vízszintes görgetés",
+    "ok": true,
+    "reszlet": "0px"
+  },
+  {
+    "nev": "1920px: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "1920px: minden saját fájl betölt",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Intro után a cím látható",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Fő cím a tényleges szöveg",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Rajz: célkereszt követi az egeret",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Lapszám-jelző követi a görgetést",
+    "ok": true,
+    "reszlet": "04"
+  },
+  {
+    "nev": "KIOSZ: a fül váltja a réteget",
+    "ok": true,
+    "reszlet": "true / 2"
+  },
+  {
+    "nev": "Rajzjegyzék: 8 projekt",
+    "ok": true,
+    "reszlet": "8"
+  },
+  {
+    "nev": "Rajzjegyzék: a sor váltja a részletrajzot",
+    "ok": true,
+    "reszlet": "K.T BYGG Hungary Kft."
+  },
+  {
+    "nev": "Rajzjegyzék: a csúszka megjelenik",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Vélemények: pontosan 6 Facebook-ajánlás",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Ajánlatkérő: összefoglaló frissül",
+    "ok": true,
+    "reszlet": "Rendelési rendszer / 3 kiválasztva"
+  },
+  {
+    "nev": "Ajánlatkérő: hiányzó adatnál hibaüzenet",
+    "ok": true,
+    "reszlet": "Add meg a neved és egy érvényes e-mail-címet."
+  },
+  {
+    "nev": "Ajánlatkérő: 31 funkció",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Asztali: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Csökkentett mozgás: a rajz azonnal teljes",
+    "ok": true,
+    "reszlet": "1"
+  },
+  {
+    "nev": "Csökkentett mozgás: nincs konzolhiba",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Koncepcióoldal: 3 irány",
+    "ok": true,
+    "reszlet": ""
+  },
+  {
+    "nev": "Koncepcióoldal: hiba nélkül",
+    "ok": true,
+    "reszlet": ""
+  }
+]
